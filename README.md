@@ -69,4 +69,5 @@ After the prompt return, you should be able to access your device through the co
 ~~~
 
 
-
+# Contributions
+Any PR(s) are welcomed.
