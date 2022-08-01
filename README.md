@@ -3,7 +3,7 @@
 ## 📖 Documentation
 -----
 - [Prerequisites](#Prerequisites)
-- [Zero-Touch Provisioning](zero-touch-provisioning)
+- [Zero-Touch Provisioning](#zero-touch-provisioning)
   - [Install Edge Dependencies](#install-edge-dependencies)
   - [Provision your device](#provision-your-device)
 - [Contributions](#Contributions)
