@@ -1,5 +1,9 @@
 # WANPAD Edge Management
 
+## 📖 Documentation
+-----
+- [Prerequisites](#Prerequisites)
+
 ## Prerequisites
 
 For WANPAD controller to be able to work with your Device you need the following requirements:
@@ -21,7 +25,9 @@ For WANPAD controller to be able to work with your Device you need the following
 | Storage | 8 GB |
 | Network | 2 interfaces |
 
+
 - You **Must have** `root` access to the device you want to add to your organization.
+
 
 - It is recommended to consult _WANPAD_ technical assistants on the type of the board you choose for the edge devices.
 
