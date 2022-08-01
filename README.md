@@ -3,8 +3,12 @@
 ## 📖 Documentation
 -----
 - [Prerequisites](#Prerequisites)
-- [Zero-Touch Provisioning](Zero-Touch-Provisioning)
-  - []()
+- [Zero-Touch Provisioning](zero-touch-provisioning)
+  - [Install Edge Dependencies](#install-edge-dependencies)
+  - [Provision your device](#provision-your-device)
+- [Contributions](#Contributions)
+
+
 ## Prerequisites
 
 For WANPAD controller to be able to work with your Device you need the following requirements:
