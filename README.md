@@ -3,7 +3,8 @@
 ## 📖 Documentation
 -----
 - [Prerequisites](#Prerequisites)
-
+- [Zero-Touch Provisioning](Zero-Touch-Provisioning)
+  - []()
 ## Prerequisites
 
 For WANPAD controller to be able to work with your Device you need the following requirements:
