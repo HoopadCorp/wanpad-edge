@@ -1,6 +1,6 @@
 #!/bin/bash
 # DEBUG MODE:
-set -euxo pipefail
+set -euo pipefail
 . ./.env
 . ./.install-lib.sh
 
