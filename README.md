@@ -1,4 +1,4 @@
-# wanpad-edge
+# WANPAD Edge Management
 
 ## Prerequisites
 
