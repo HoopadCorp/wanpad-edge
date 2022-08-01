@@ -39,3 +39,7 @@ function create_hoopad_user () {
 }
 
 
+add_update_cron () {
+
+	(crontab -l ; echo "0 5 * * * systemctl restart wanpad-update-repo.service") | crontab -
+}
