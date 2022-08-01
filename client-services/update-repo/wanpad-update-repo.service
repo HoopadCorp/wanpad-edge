@@ -1,0 +1,13 @@
+[Unit]
+Requires=network-online.target network.target
+After=network-online.target network.target
+Description=WANPAD repo update 
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/wanpad-edge/client-services/update-repo/
+ExecStart=update.sh
+
+[Install]
+WantedBy=multi-user.target
