@@ -23,7 +23,7 @@ function enable_wanpad_services () {
 
 function start_wanpad_services () {
 	
-	for i in `ls /etc/systemd/system/wanpad-* | sed 's|/etc/systemd/system/||g'` ; do systemctl start $i ; done
+	for i in `ls /etc/systemd/system/wanpad-* | sed 's|/etc/systemd/system/||g'` ; do systemctl start $i || true ; done
 }
 
 function create_hoopad_user () {
