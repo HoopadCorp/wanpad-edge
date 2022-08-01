@@ -5,6 +5,6 @@ network:
       addresses: [${IP}]
       gateway4: ${GW}
       nameservers:
-        search: [hoopad.local, local]
+        search: [local]
         addresses: [${DNS}]
   version: 2
