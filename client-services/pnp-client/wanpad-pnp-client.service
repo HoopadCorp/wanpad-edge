@@ -1,0 +1,13 @@
+[Unit]
+Description=WanPad Plug & Play client side service
+Requires=wanpad-controller-oob.service network.target network-online.target
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/etc/wanpad/pnp-client/
+ExecStart=python3 /etc/wanpad/pnp-client/pnp-client.py
+Restart=on-failure
+RestartSec=4
+
+[Install]
+WantedBy=multi-user.target

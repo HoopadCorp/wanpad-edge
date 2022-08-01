@@ -1,0 +1,12 @@
+[Unit]
+Description=WanPad node exporter for monitroing the node
+Requires=network-online.target network.target
+
+[Service]
+User=root
+WorkingDirectory=/etc/wanpad/node_exporter-1.2.2.linux-amd64
+ExecStart=/etc/wanpad/node_exporter-1.2.2.linux-amd64/node_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

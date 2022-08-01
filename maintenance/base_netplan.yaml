@@ -1,0 +1,10 @@
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    ${INTERFACE_NAME}:
+      addresses: [${IP}]
+      gateway4: ${GW}
+      nameservers:
+        search: [hoopad.local, local]
+        addresses: [${DNS}]
+  version: 2

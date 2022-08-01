@@ -1,0 +1,14 @@
+[Unit]
+Requires=network-online.target network.target 
+After=network-online.target network.target 
+Description=WanPad Nanopi r1 lte init
+
+[Service]
+Type=simple
+User=root
+ExecStart=/etc/wanpad/lte-module/init-lte-module.sh
+RestartSec=5s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

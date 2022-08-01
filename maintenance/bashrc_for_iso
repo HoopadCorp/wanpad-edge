@@ -1,0 +1,19 @@
+### Customized Bash.bashrc
+
+if [[ -e /root/wanpad_os/maintenance/firts_run_status ]]
+then
+        return 0
+else
+        cd /root/wanpad_os/maintenance/
+        echo -n "Enter Hostname: "
+        read "HOSTNAME"
+        echo -n "Enter IP address:(e.g: 192.168.1.150/24) "
+        read "IP"
+        echo -n "Enter Gateway:(defaults to x.y.z.1 if left empty) "
+        read "GW"
+        echo -n "Enter DNS:(comma separated format e.g: 1.1.1.1,9.9.9.9) "
+        read "DNS"
+
+        ./startup_cmd.sh "$HOSTNAME" "$IP" "$GW" "$DNS" && touch /root/wanpad_os/maintenance/firts_run_status
+
+fi
