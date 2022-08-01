@@ -27,4 +27,16 @@ For WANPAD controller to be able to work with your Device you need the following
 
 ## Zero-Touch Provisioning
 
-The Zero-Touch Provisioning on WANPAD requires 
+The Zero-Touch Provisioning on WANPAD requires Token-based authentication to add your devices to the controller.
+
+You can obtain a token doing `User Profile > Tokens > add token` and set the permission for the token to `add device`.
+
+### Install Edge Dependencies
+
+~~~
+
+
+~~~
+
+
+
