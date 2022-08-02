@@ -46,6 +46,8 @@ You can obtain a token doing `User Profile > Tokens > add token` and set the per
 
 ### Install Edge Dependencies
 
+Login with `root`, do not use `sudo`.
+
 ~~~
 cd /root/
 git clone https://github.com/HoopadCorp/wanpad-edge.git
