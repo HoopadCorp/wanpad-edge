@@ -54,16 +54,6 @@ sudo -i # if you aren't logged in using root user
 cd /root/
 git clone https://github.com/HoopadCorp/wanpad-edge.git
 cd ./wanpad-edge/installation/
-~~~
-
-- _If you run into a problem with cloning this repo just do _
-~~~
-cd ./wanpad-edge/installation/
-git pull
-~~~
-
-Then run the install script:
-~~~
 ./install.sh
 ~~~
 
@@ -78,9 +68,7 @@ Wait for the installation to be completed. If there are any errors, feel free to
 You'll be prompted to enter your controller URL and access token:
 
 ~~~
-
 Please Provide the following information:
-
 WANPAD controller URI: <URI HERE>
 Your access token: <TOKEN HERE>
 ~~~
