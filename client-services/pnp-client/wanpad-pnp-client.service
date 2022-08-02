@@ -5,6 +5,7 @@ Requires=wanpad-controller-oob.service network.target network-online.target
 Type=forking
 User=root
 WorkingDirectory=/etc/wanpad/pnp-client/
+ExecStartPre=sleep 30s
 ExecStart=python3 /etc/wanpad/pnp-client/pnp-client.py
 Restart=on-failure
 RestartSec=4
