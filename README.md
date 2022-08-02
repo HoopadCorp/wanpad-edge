@@ -50,6 +50,7 @@ You can obtain a token doing `User Profile > Tokens > add token` and set the per
 Login with `root`, do not use `sudo`.
 
 ~~~
+sudo -i # if you aren't logged in using root user
 cd /root/
 git clone https://github.com/HoopadCorp/wanpad-edge.git
 cd ./wanpad-edge/installation/
