@@ -67,9 +67,8 @@ validate_token () {
 
 change_env_file () {
 
-	sed -i "s|URI=.*|URI='https://$URI:8001/wanpad/api/v1/devices/plug_play/'|g" ${ZTP_ENV_FILE}
-	sed -i "s|TOKEN=.*|TOKEN='$TOKEN'|g" ${ZTP_ENV_FILE}
-
+	echo "URI='https://$URI:8001/wanpad/api/v1/devices/plug_play/" > ${ZTP_ENV_FILE}
+	echo "TOKEN='$TOKEN" >> ${ZTP_ENV_FILE}
 }
 
 run_pnp_client_py () {
