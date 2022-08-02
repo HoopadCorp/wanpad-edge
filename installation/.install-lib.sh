@@ -16,7 +16,8 @@ function install_pip_deps () {
 }
 
 function enable_wanpad_services () {
-
+	
+	mkdir -p /etc/wanpad/
 	ln -sf ~/wanpad_os/client-services/* /etc/wanpad/
 	systemctl daemon-reload
 	for i in `ls /etc/wanpad/*/wanpad*.service  | xargs` ; do systemctl enable $i ; done
