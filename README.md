@@ -54,6 +54,16 @@ sudo -i # if you aren't logged in using root user
 cd /root/
 git clone https://github.com/HoopadCorp/wanpad-edge.git
 cd ./wanpad-edge/installation/
+~~~
+
+- _If you run into a problem with cloning this repo just do _
+~~~
+cd ./wanpad-edge/installation/
+git pull
+~~~
+
+Then run the install script:
+~~~
 ./install.sh
 ~~~
 
