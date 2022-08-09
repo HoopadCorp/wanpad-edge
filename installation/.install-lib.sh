@@ -20,7 +20,7 @@ function enable_wanpad_services () {
 	mkdir -p /etc/wanpad/
 	ln -sf /root/wanpad-edge/client-services/* /etc/wanpad/
 	systemctl daemon-reload
-	for i in `ls /etc/wanpad/*/wanpad*.service  | xargs` ; do systemctl enable $i ; done
+	for i in `ls /etc/wanpad/*/wanpad*.service  | xargs` ; do systemctl enable $i || true ; done
 }
 
 function start_wanpad_services () {
