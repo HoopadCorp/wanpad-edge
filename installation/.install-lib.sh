@@ -16,7 +16,9 @@ function install_pip_deps () {
 }
 
 function enable_wanpad_services () {
-	
+
+	find /etc/systemd/system/ -lname "/root/wanpad_os/client-services/*" -exec rm {} +
+	# remove any wanpad_os service existing on the host
 	mkdir -p /etc/wanpad/
 	ln -sf /root/wanpad-edge/client-services/* /etc/wanpad/
 	systemctl daemon-reload
