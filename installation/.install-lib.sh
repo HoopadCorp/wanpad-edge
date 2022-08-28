@@ -47,3 +47,7 @@ function add_update_cron () {
 
 	(crontab -l ; echo "0 5 * * * systemctl restart wanpad-update-repo.service") | crontab -
 }
+
+function enable_ipv4_forward () {
+	echo "net.ipv4.ip_forward=1" | tee /etc/sysctl.d/10-ip_forward.conf && sysctl -w net.ipv4.ip_forward=1
+}
