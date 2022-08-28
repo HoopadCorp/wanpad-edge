@@ -32,14 +32,12 @@ def client_program():
         request_tourl = requests.post(url, verify=False, data=data, timeout=6)
         if request_tourl.status_code == 400:
             print(request_tourl.text)
-            print(sys.exit(1))
             return sys.exit(1)
         elif request_tourl.status_code == 200:
             print(request_tourl.text)
         elif request_tourl.status_code == 201:
             public_key = request_tourl.text
             os.system(f"sudo echo {public_key} > /home/hoopad/.ssh/authorized_keys")
-            print(sys.exit(0))
             return sys.exit(0)
         else:
             print(f"Error Code: {request_tourl.status_code}")
