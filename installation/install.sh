@@ -11,5 +11,5 @@ install_apt_deps
 install_pip_deps
 enable_wanpad_services
 start_wanpad_services
-add_update_cron || true 
-
+add_update_cron || true
+enable_ipv4_forward
