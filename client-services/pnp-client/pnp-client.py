@@ -41,6 +41,9 @@ def client_program():
             os.system(f"sudo echo {public_key} > /home/hoopad/.ssh/authorized_keys")
             print(sys.exit(0))
             return sys.exit(0)
+        else:
+            print(f"Error Code: {request_tourl.status_code}")
+            return sys.exit(0)
 
 
 if __name__ == "__main__":
