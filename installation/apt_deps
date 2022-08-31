@@ -1,1 +1,1 @@
-git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential python3-dev strongswan strongswan-starter
+git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential python3-dev strongswan
