@@ -7,7 +7,7 @@ set -euxo pipefail
 function install_apt_deps () {
 
 	apt update -y
-	apt install `cat ${APT_DEPS_FILE}`
+	apt install -y `cat ${APT_DEPS_FILE}`
 }
 
 function install_pip_deps () {
