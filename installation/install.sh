@@ -9,6 +9,7 @@ set -euo pipefail
 create_hoopad_user || true
 install_apt_deps
 install_pip_deps
+birdwatcher_conf
 enable_wanpad_services
 start_wanpad_services
 add_update_cron || true

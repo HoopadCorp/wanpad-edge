@@ -15,6 +15,13 @@ function install_pip_deps () {
 	pip3 install -r ${PIP_DEPS_FILE}
 }
 
+function birdwatcher_conf () {
+
+	mkdir -p /etc/birdwatcher/
+	cp "${CLIENT_SERVICES_DIR}/birdwatcher/birdwatcher.conf" /etc/birdwatcher/birdwatcher.conf
+	
+}
+
 function enable_wanpad_services () {
 
 	find /etc/systemd/system/ -lname "/root/wanpad_os/client-services/*" -exec rm {} +
