@@ -58,4 +58,7 @@ function set_fib_multipath_hash_policy_1 () {
 	echo 'net.ipv4.fib_multipath_hash_policy = 1' | tee /etc/sysctl.d/10-fib_multipath_hash_policy.conf
 }
 
+function birdwatcher_conf () {
 
+	
+}
