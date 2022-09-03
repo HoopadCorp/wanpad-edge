@@ -2,9 +2,8 @@
 Description=WANPAD birdwatcher service
 Requires=network.target network-online.target
 [Service]
-Type=forking
+Type=simple
 User=root
-ExecStartPre=sleep 5s
 ExecStart=/etc/wanpad/birdwatcher/birdwatcher-linux-amd64 --config /etc/birdwatcher/birdwatcher.conf
 Restart=on-failure
 RestartSec=4
