@@ -13,3 +13,4 @@ enable_wanpad_services
 start_wanpad_services
 add_update_cron || true
 enable_ipv4_forward
+set_fib_multipath_hash_policy_1
