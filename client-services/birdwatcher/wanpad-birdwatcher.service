@@ -4,9 +4,8 @@ Requires=network.target network-online.target
 [Service]
 Type=forking
 User=root
-WorkingDirectory=/etc/wanpad/birdwatcher/
 ExecStartPre=sleep 5s
-ExecStart=birdwatcher-linux-amd64 --config /etc/birdwatcher/birdwatcher.conf
+ExecStart=/etc/wanpad/birdwatcher/birdwatcher-linux-amd64 --config /etc/birdwatcher/birdwatcher.conf
 Restart=on-failure
 RestartSec=4
 
