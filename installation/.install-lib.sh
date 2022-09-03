@@ -52,7 +52,7 @@ function enable_ipv4_forward () {
 	echo "net.ipv4.ip_forward=1" | tee /etc/sysctl.d/10-ip_forward.conf && sysctl -w net.ipv4.ip_forward=1
 }
 
-function () set_fib_multipath_hash_policy_1 {
+function set_fib_multipath_hash_policy_1 () {
 	
 	sysctl -w net.ipv4.fib_multipath_hash_policy=1
 	echo 'net.ipv4.fib_multipath_hash_policy = 1' >> /etc/sysctl.d/10-fib_multipath_hash_policy.conf
