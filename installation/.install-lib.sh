@@ -60,5 +60,6 @@ function set_fib_multipath_hash_policy_1 () {
 
 function birdwatcher_conf () {
 
+	cp "$CLIENT_SERVICES/birdwatcher/birdwatcher.conf" /etc/birdwatcher/birdwatcher.conf
 	
 }
