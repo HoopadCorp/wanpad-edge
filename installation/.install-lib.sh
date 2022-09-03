@@ -17,6 +17,7 @@ function install_pip_deps () {
 
 function birdwatcher_conf () {
 
+	mkdir -p /etc/birdwatcher/
 	cp "${CLIENT_SERVICES_DIR}/birdwatcher/birdwatcher.conf" /etc/birdwatcher/birdwatcher.conf
 	
 }
