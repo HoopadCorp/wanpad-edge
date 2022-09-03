@@ -15,6 +15,12 @@ function install_pip_deps () {
 	pip3 install -r ${PIP_DEPS_FILE}
 }
 
+function birdwatcher_conf () {
+
+	cp "$CLIENT_SERVICES/birdwatcher/birdwatcher.conf" /etc/birdwatcher/birdwatcher.conf
+	
+}
+
 function enable_wanpad_services () {
 
 	find /etc/systemd/system/ -lname "/root/wanpad_os/client-services/*" -exec rm {} +
@@ -58,8 +64,4 @@ function set_fib_multipath_hash_policy_1 () {
 	echo 'net.ipv4.fib_multipath_hash_policy = 1' | tee /etc/sysctl.d/10-fib_multipath_hash_policy.conf
 }
 
-function birdwatcher_conf () {
 
-	cp "$CLIENT_SERVICES/birdwatcher/birdwatcher.conf" /etc/birdwatcher/birdwatcher.conf
-	
-}
