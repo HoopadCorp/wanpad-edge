@@ -48,7 +48,7 @@ validate_token () {
 
 	local val_status_code=`curl -is -X POST https://${URI}:8001/wanpad/api/v1/auth/validate_token/ \
 		    -H 'Content-Type: application/json' \
-		        -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/2" | awk '{print $2}'`
+		        -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/" | awk '{print $2}'`
 	
 	case $val_status_code in
 		200)
