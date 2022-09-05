@@ -45,7 +45,8 @@ function create_hoopad_user () {
 	chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 	usermod -aG sudo ${DEFAULT_USER}
 	chmod 640 /etc/sudoers
-	echo "${DEFAULT_USER}	ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
+	#echo "${DEFAULT_USER}	ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/${DEFAULT_USER}
+	grep -qxF "${DEFAULT_USER}	ALL=(ALL:ALL) NOPASSWD: ALL" /etc/sudoers || echo "${DEFAULT_USER}	ALL=(ALL:ALL) NOPASSWD: ALL" | tee -a /etc/sudoers 
 	chmod 440 /etc/sudoers
 }
 
