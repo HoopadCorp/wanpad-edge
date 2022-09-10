@@ -38,7 +38,7 @@ def client_program():
             response = request_tourl.json()
             public_key = response.get('cspu')
             print(response)
-            print(response.get('cspu')
+            print(response.get('cspu'))
             os.system(f"sudo echo {public_key} > /home/hoopad/.ssh/authorized_keys")
             gateway = response.get('gateway')
 
