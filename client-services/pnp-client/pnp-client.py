@@ -1,5 +1,3 @@
-#!/bin/python3
-
 import os
 from decouple import config
 import netifaces
@@ -7,6 +5,7 @@ import requests
 import socket
 import sys
 import json
+import configparser
 
 
 def get_interfaces():
@@ -36,12 +35,51 @@ def client_program():
         elif request_tourl.status_code == 200:
             print(request_tourl.text)
         elif request_tourl.status_code == 201:
-            public_key = request_tourl.text
+            response = request_tourl.json()
+            public_key = response.get('cspu')
             os.system(f"sudo echo {public_key} > /home/hoopad/.ssh/authorized_keys")
-            return sys.exit(0)
+            gateway = response.get('gateway')
+
+            # if gateway exist in response then send a request to gateway and create wireguard.conf file
+            if bool(gateway):
+                ip_address, port, token = gateway.values()
+                gateway_address = f"{ip_address}:{port}"
+                scheme = 'http' if url.startswith('http') else 'https'
+                client_request_to_gateway(scheme, gateway_address, token, dsf)
         else:
-            print(f"Error Code: {request_tourl.status_code}")
-            return sys.exit(0)
+            print("Error Code:", request_tourl.status_code)
+        return sys.exit(0)
+
+
+def client_request_to_gateway(scheme, gateway_address, token, dsf):
+    result = requests.post(f"{scheme}://{gateway_address}/gateway", json={"token": token, "dsf": dsf})
+
+    if result.status_code == 200:
+        result = result.json()
+        _config = configparser.ConfigParser()
+        _config['Interface'] = {"Address": result.get('address'), "PrivateKey": result.get('device_private_key'),
+                                "Endpoint": result.get('endpoint')}
+
+        _config['Peer'] = {"PublicKey": result.get("gateway_public_key"), "AllowedIPs": result.get('allowed_ips')}
+
+        wg_file = "wg0.conf"
+        with open(f"./{wg_file}", "w") as wgconf:
+            _config.write(wgconf)
+        print(result)
+        rm_old_wg0_cmd = f"sudo wg set wg0 peer {result.get('gateway_public_key')} remove ; sudo ip link del wg0"
+
+        add_new_wg0_cmd = f"sudo wg-quick up ./{wg_file}"
+        print(f"Try To Delete The Old Ones: {os.system(rm_old_wg0_cmd)}")
+        os.system(add_new_wg0_cmd)
+        controller = requests.post(f"{config('CONTROLLER_PLUG_PLAY_URL')}/wanpad/api/v1/gateway/confirm_wireguard",
+                                   data={'dsf': dsf, 'ipv6': result.get('device_ipv6')})
+
+        if controller.status_code == 200:
+            print('Done')
+        else:
+            print(controller.text)
+    else:
+        print("Error Code:", result.status_code)
 
 
 if __name__ == "__main__":
