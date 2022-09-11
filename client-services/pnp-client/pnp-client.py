@@ -45,7 +45,7 @@ def client_program():
                 ip_address, port, token = gateway.values()
                 gateway_address = f"{ip_address}:{port}"
                 scheme = 'http' if url.startswith('http') else 'https'
-                client_request_to_gateway(scheme, gateway_address, token, dsf)
+                #client_request_to_gateway(scheme, gateway_address, token, dsf)
         else:
             print("Error Code:", request_tourl.status_code)
         return sys.exit(0)
