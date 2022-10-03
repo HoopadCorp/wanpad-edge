@@ -66,4 +66,8 @@ function set_fib_multipath_hash_policy_1 () {
 	echo 'net.ipv4.fib_multipath_hash_policy = 1' | tee /etc/sysctl.d/10-fib_multipath_hash_policy.conf
 }
 
-
+function set_fib_ip_no_pmtu_disc_1 () {
+	
+	sysctl -w net.ipv4.ip_no_pmtu_disc=1
+	echo 'net.ipv4.ip_no_pmtu_disc = 1' | tee /etc/sysctl.d/10-ip-no-pmtu-disc.conf
+}
