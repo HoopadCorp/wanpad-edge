@@ -6,7 +6,7 @@ Description=WANPAD repo update
 [Service]
 Type=simple
 User=root
-ExecStart=/root/wanpad-edge/client-services/update-repo/update.sh
+ExecStart=/etc/wanpad/client-services/update-repo/update.sh
 
 [Install]
 WantedBy=multi-user.target
