@@ -16,3 +16,4 @@ add_update_cron || true
 enable_ipv4_forward
 set_fib_multipath_hash_policy_1
 set_fib_ip_no_pmtu_disc_1
+fprobe_conf
