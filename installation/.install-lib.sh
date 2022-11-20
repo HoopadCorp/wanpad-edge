@@ -76,7 +76,7 @@ function fprobe_conf () {
 
 	local service='fprobe'
 	cp "${CLIENT_SERVICES_DIR}/${service}/${service}.conf" "/etc/default/${service}"
-	sleep 3 ; systemctl restart fprobe.service
+	systemctl restart fprobe.service || systemctl restart fprobe.service
 }
 
 function extract_filebeat () {
