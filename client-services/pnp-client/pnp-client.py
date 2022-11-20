@@ -6,6 +6,22 @@ import socket
 import sys
 import json
 import configparser
+import yaml
+
+filebeat_data = {'filebeat.config': {'modules': {'path': '${path.config}/modules.d/*.yml', 'reload.enabled': False}},
+                 'filebeat.modules': [
+                     {'module': 'system', 'syslog': {'enabled': True, 'var.paths': ['/var/log/syslog*']},
+                      'auth': {'enabled': True, 'var.paths': ['/var/log/auth.log*']}}, {'module': 'iptables',
+                                                                                        'log': {'enabled': True,
+                                                                                                'var.paths': [
+                                                                                                    '/var/log/kern.log*'],
+                                                                                                'var.input': 'file'}},
+                     {'module': 'netflow',
+                      'log': {'enabled': True, 'var': {'netflow_host': '0.0.0.0', 'netflow_port': 2055}}}],
+                 'output.elasticsearch': {
+                     'ssl.certificate_authorities': ['/usr/local/share/ca-certificates/WANPAD.crt'],
+                     'hosts': 'ENV_ME', 'username': 'ENV_ME', 'password': 'ENV_ME'}
+                 }
 
 
 def get_interfaces():
@@ -28,26 +44,33 @@ def client_program():
                 "token": config('TOKEN'),
                 "dsf": dsf}
         url = config('URI')
-        request_tourl = requests.post(url, verify=False, data=data, timeout=6)
-        if request_tourl.status_code == 400:
-            print(request_tourl.text)
+        request_to_url = requests.post(url, verify=False, data=data, timeout=6)
+        if request_to_url.status_code == 400:
+            print(request_to_url.text)
             return sys.exit(1)
-        elif request_tourl.status_code == 200:
-            print(request_tourl.text)
-        elif request_tourl.status_code == 201:
-            response = request_tourl.json()
+        elif request_to_url.status_code == 200:
+            print(request_to_url.text)
+        elif request_to_url.status_code == 201:
+            response = request_to_url.json()
             public_key = response.get('cspu')
             os.system(f"sudo echo {public_key} > /home/hoopad/.ssh/authorized_keys")
             gateway = response.get('gateway')
+
+            filebeat = response.get('filebeat')
+            filebeat_data['output.elasticsearch']['hosts'] = filebeat.get('hosts')
+            filebeat_data['output.elasticsearch']['username'] = filebeat.get('username')
+            filebeat_data['output.elasticsearch']['password'] = filebeat.get('password')
+
+            create_file_beat(filebeat_data, filebeat.get('conf_address'))
 
             # if gateway exist in response then send a request to gateway and create wireguard.conf file
             if bool(gateway):
                 ip_address, port, token = gateway.values()
                 gateway_address = f"{ip_address}:{port}"
                 scheme = 'http' if url.startswith('http') else 'https'
-                #client_request_to_gateway(scheme, gateway_address, token, dsf)
+                client_request_to_gateway(scheme, gateway_address, token, dsf)
         else:
-            print("Error Code:", request_tourl.status_code)
+            print("Error Code:", request_to_url.status_code)
         return sys.exit(0)
 
 
@@ -80,6 +103,11 @@ def client_request_to_gateway(scheme, gateway_address, token, dsf):
             print(controller.text)
     else:
         print("Error Code:", result.status_code)
+
+
+def create_file_beat(data, address):
+    with open(address, 'w+') as filebeat_config:
+        yaml.dump(data, filebeat_config, default_flow_style=False)
 
 
 if __name__ == "__main__":
