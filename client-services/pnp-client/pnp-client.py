@@ -60,6 +60,7 @@ def client_program():
             filebeat_data['output.elasticsearch']['hosts'] = filebeat.get('hosts')
             filebeat_data['output.elasticsearch']['username'] = filebeat.get('username')
             filebeat_data['output.elasticsearch']['password'] = filebeat.get('password')
+            filebeat_data['output.elasticsearch']['ssl.certificate_authorities'] = filebeat.get('ssl_crt')
 
             create_file_beat(filebeat_data, filebeat.get('conf_address'))
 
