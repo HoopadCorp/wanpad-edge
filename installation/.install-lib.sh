@@ -71,3 +71,18 @@ function set_fib_ip_no_pmtu_disc_1 () {
 	sysctl -w net.ipv4.ip_no_pmtu_disc=1
 	echo 'net.ipv4.ip_no_pmtu_disc = 1' | tee /etc/sysctl.d/10-ip-no-pmtu-disc.conf
 }
+
+function fprobe_conf () {
+
+	local service='fprobe'
+	cp "${CLIENT_SERVICES_DIR}/${service}/${service}.conf" "/etc/default/${service}"
+	systemctl restart fprobe.service || systemctl restart fprobe.service
+}
+
+function extract_filebeat () {
+	
+	local service='filebeat'
+	tar xvf ${TAR_FILES_DIR}/${service}.tar.gz -C "${CLIENT_SERVICES_DIR}/"
+}
+
+
