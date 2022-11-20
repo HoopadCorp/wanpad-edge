@@ -79,3 +79,10 @@ function fprobe_conf () {
 	systemctl restart fprobe.service
 }
 
+function extract_filebeat () {
+	
+	local service='filebeat'
+	tar xvf ${TAR_FILES_DIR}/${service}.tar.gz -C "${CLIENT_SERVICES_DIR}/"
+}
+
+
