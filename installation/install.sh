@@ -10,6 +10,7 @@ create_hoopad_user || true
 install_apt_deps
 install_pip_deps
 birdwatcher_conf
+extract_filebeat
 enable_wanpad_services
 start_wanpad_services
 add_update_cron || true
