@@ -57,6 +57,8 @@ cd ./wanpad-edge/installation/
 ./install.sh
 ~~~
 
+> NOTE: Please just hit `Enter` when you are prompted for a configuration in a pink screen !
+
 Wait for the installation to be completed. If there are any errors, feel free to reach out to _issues_ and inform us or call the tech assistans!
 
 ### Provision your device
