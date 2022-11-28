@@ -35,7 +35,7 @@ For WANPAD controller to be able to work with your Device you need the following
 
 - You **MUST** have `ssh` service running on port `24489`
 
-- It is recommended to consult _WANPAD_ technical assistants on the type of the board you choose for the edge devices.
+- It is recommended to consult [Hoopad](https://github.com/HoopadCorp) technical assistants on the type of the board you choose for the edge devices.
 
 
 
