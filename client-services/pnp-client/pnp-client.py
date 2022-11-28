@@ -19,8 +19,11 @@ filebeat_data = {'filebeat.config': {'modules': {'path': '${path.config}/modules
                      {'module': 'netflow',
                       'log': {'enabled': True, 'var': {'netflow_host': '0.0.0.0', 'netflow_port': 2055}}}],
                  'output.elasticsearch': {
-                     'ssl.certificate_authorities': ['/usr/local/share/ca-certificates/WANPAD.crt'], 'hosts': 'ENV_ME',
-                     'username': 'ENV_ME', 'password': 'ENV_ME'}}
+                     'ssl.certificate_authorities': ['/usr/local/share/ca-certificates/WANPAD.crt'], 'hosts': 'ENV_ME'},
+                'setup.ilm.enabled': True,
+                 'setup.ilm.rollover_alias': 'filebeat', 'setup.ilm.pattern': '{now/d}-000001',
+                 'output.elasticsearch.index': 'filebeat-%{[agent.version]}-%{+yyyy.MM.dd}',
+                 'setup.template.name': 'filebeat', 'setup.template.pattern': 'filebeat-*'}
 
 
 def get_interfaces():
@@ -57,9 +60,8 @@ def client_program():
 
             filebeat = response.get('filebeat')
             filebeat_data['output.elasticsearch']['hosts'] = filebeat.get('hosts')
-            filebeat_data['output.elasticsearch']['username'] = filebeat.get('username')
-            filebeat_data['output.elasticsearch']['password'] = filebeat.get('password')
             filebeat_data['output.elasticsearch']['ssl.certificate_authorities'] = filebeat.get('ssl_crt')
+            filebeat_data['output.elasticsearch.api_key'] = f"{filebeat.get('id')}:{filebeat.get('api_key')}"
 
             create_file_beat(filebeat_data, filebeat.get('conf_address'))
 
