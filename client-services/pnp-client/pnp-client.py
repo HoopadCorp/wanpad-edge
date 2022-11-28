@@ -61,8 +61,6 @@ def client_program():
 
             filebeat = response.get('filebeat')
             filebeat_data['output.elasticsearch']['hosts'] = filebeat.get('hosts')
-            filebeat_data['output.elasticsearch']['username'] = filebeat.get('username')
-            filebeat_data['output.elasticsearch']['password'] = filebeat.get('password')
             filebeat_data['output.elasticsearch']['ssl.certificate_authorities'] = filebeat.get('ssl_crt')
             filebeat_data['output.elasticsearch.api_key'] = f"{filebeat.get('id')}:{filebeat.get('api_key')}"
 
