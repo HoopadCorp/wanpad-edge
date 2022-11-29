@@ -76,7 +76,7 @@ function fprobe_conf () {
 
 	local service='fprobe'
 	cp "${CLIENT_SERVICES_DIR}/${service}/${service}.conf" "/etc/default/${service}"
-	systemctl restart fprobe.service || systemctl restart fprobe.service
+	until systemctl restart fprobe.service ; do echo "trying to restart fprobe service... if this is taking too long consult Hoopad tech assistants" ; sleep 5 ;done
 }
 
 function extract_filebeat () {
