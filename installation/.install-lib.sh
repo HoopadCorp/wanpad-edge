@@ -89,7 +89,7 @@ function set_ssh_default_port () {
 	
 	# delete any comments or configs for Port
 	local SSHD_CONFIG_ADDR=/etc/ssh/sshd_config
-	local current_port=`grep "Port " ${SSHD_CONFIG_ADDR} | awk '{print $2}'`
+	local current_port=`grep "^Port " ${SSHD_CONFIG_ADDR} | awk '{print $2}'`
 	if [[ $current_port != $DEFAULT_SSH_PORT ]]
 	then
 		echo "
