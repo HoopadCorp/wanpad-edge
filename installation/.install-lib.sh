@@ -76,7 +76,7 @@ function fprobe_conf () {
 
 	local service='fprobe'
 	cp "${CLIENT_SERVICES_DIR}/${service}/${service}.conf" "/etc/default/${service}"
-	until systemctl restart fprobe.service ; do echo "trying to restart fprobe service... if this is taking too long consult Hoopad tech assistants" ; sleep 5 ;done
+	until systemctl restart fprobe.service ; do set +x ;echo "trying to restart fprobe service... if this is taking too long consult Hoopad tech assistants" ; set -x;  sleep 5 ;done
 }
 
 function extract_filebeat () {
@@ -85,4 +85,30 @@ function extract_filebeat () {
 	tar xvf ${TAR_FILES_DIR}/${service}.tar.gz -C "${CLIENT_SERVICES_DIR}/"
 }
 
+function set_ssh_default_port () {
+	
+	# delete any comments or configs for Port
+	local SSHD_CONFIG_ADDR=/etc/ssh/sshd_config
+	local current_port=`grep "^Port " ${SSHD_CONFIG_ADDR} | awk '{print $2}'`
+	if [[ $current_port != $DEFAULT_SSH_PORT ]]
+	then
+		set +x ;
+		echo "
+		
+		
+NOTICE:
+	After this operation you won't be able to access SSH service at port $current_port anymore.
+	The SSH port will be changed to $DEFAULT_SSH_PORT
+	
+	
+	
+"
+		set -x;
+	fi
+	
+	sed -i '/.*Port */d' ${SSHD_CONFIG_ADDR}
+	echo "Port ${DEFAULT_SSH_PORT}" | tee -a ${SSHD_CONFIG_ADDR}
+	systemctl restart sshd
+	
+}
 

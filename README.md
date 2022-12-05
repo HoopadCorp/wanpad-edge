@@ -33,8 +33,6 @@ For WANPAD controller to be able to work with your Device you need the following
 
 - You **Must have** `root` access to the device you want to add to your organization.
 
-- You **MUST** have `ssh` service running on port `24489`
-
 - It is recommended to consult [Hoopad](https://github.com/HoopadCorp) technical assistants on the type of the board you choose for the edge devices.
 
 
@@ -49,16 +47,18 @@ You can obtain a token doing `User Profile > Tokens > add token` and set the per
 
 Login with `root`, do not use `sudo`.
 
+
+> NOTE: Please just hit `Enter` when you are prompted for a configuration in a pink screen !
+
+> NOTE 2: The SSH service will be running on port 24489 after running this script!
+
 ~~~
-sudo -i # if you aren't logged in using root user
+# run `sudo -i` command if you aren't logged in using root user
 cd /root/
 git clone https://github.com/HoopadCorp/wanpad-edge.git
 cd ./wanpad-edge/installation/
 ./install.sh
 ~~~
-
-> NOTE: Please just hit `Enter` when you are prompted for a configuration in a pink screen !
-
 Wait for the installation to be completed. If there are any errors, feel free to reach out to _issues_ and inform us or call the tech assistans!
 
 ### Provision your device
@@ -74,7 +74,7 @@ Please Provide the following information:
 WANPAD controller URI: <URI HERE>
 Your access token: <TOKEN HERE>
 ~~~
-- **URI format**: `company.wanpad.ir`
+- **URI format**: `controller.wanpad.ir`
  
 After the prompt return, you should be able to access your device through the controller panel.
 
