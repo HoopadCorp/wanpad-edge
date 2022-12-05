@@ -85,7 +85,7 @@ function extract_filebeat () {
 	tar xvf ${TAR_FILES_DIR}/${service}.tar.gz -C "${CLIENT_SERVICES_DIR}/"
 }
 
-function ssh_default_port () {
+function set_ssh_default_port () {
 	
 	# delete any comments or configs for Port
 	sed -i '/.*Port */d' /etc/ssh/sshd_config
