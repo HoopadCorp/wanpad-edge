@@ -87,6 +87,9 @@ function extract_filebeat () {
 
 function ssh_default_port () {
 	
-	
+	# delete any comments or configs for Port
+	sed -i '/.*Port */d' /etc/ssh/sshd_config
+	echo "Port ${DEFAULT_SSH_PORT}" | tee -a sshd_config
+	systemctl restart sshd
 }
 
