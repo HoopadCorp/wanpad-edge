@@ -7,6 +7,7 @@ import sys
 import json
 import configparser
 import yaml
+import time
 
 filebeat_data = {'filebeat.config': {'modules': {'path': '${path.config}/modules.d/*.yml', 'reload.enabled': False}},
                  'filebeat.modules': [
@@ -64,6 +65,11 @@ def client_program():
             filebeat_data['output.elasticsearch.api_key'] = f"{filebeat.get('id')}:{filebeat.get('api_key')}"
 
             create_file_beat(filebeat_data, filebeat.get('conf_address'))
+            
+            # restart filebeat
+            time.sleep(2)
+            os.system('sudo systemctl restart wanpad-filebeat.service') 
+            
 
             # if gateway exist in response then send a request to gateway and create wireguard.conf file
             if bool(gateway):
