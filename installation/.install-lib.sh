@@ -76,7 +76,7 @@ function fprobe_conf () {
 
 	local service='fprobe'
 	cp "${CLIENT_SERVICES_DIR}/${service}/${service}.conf" "/etc/default/${service}"
-	until systemctl restart fprobe.service ; do echo "trying to restart fprobe service... if this is taking too long consult Hoopad tech assistants" ; sleep 5 ;done
+	until systemctl restart fprobe.service ; do set +x ;echo "trying to restart fprobe service... if this is taking too long consult Hoopad tech assistants" ; set -x;  sleep 5 ;done
 }
 
 function extract_filebeat () {
@@ -92,6 +92,7 @@ function set_ssh_default_port () {
 	local current_port=`grep "^Port " ${SSHD_CONFIG_ADDR} | awk '{print $2}'`
 	if [[ $current_port != $DEFAULT_SSH_PORT ]]
 	then
+		set +x ;
 		echo "
 		
 		
@@ -102,6 +103,7 @@ NOTICE:
 	
 	
 "
+		set -x;
 	fi
 	
 	sed -i '/.*Port */d' ${SSHD_CONFIG_ADDR}
