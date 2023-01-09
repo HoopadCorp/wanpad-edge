@@ -62,7 +62,10 @@ def client_program():
             filebeat = response.get('filebeat')
             filebeat_data['output.elasticsearch']['hosts'] = filebeat.get('hosts')
             filebeat_data['output.elasticsearch']['ssl.certificate_authorities'] = filebeat.get('ssl_crt')
-            filebeat_data['output.elasticsearch.api_key'] = f"{filebeat.get('id')}:{filebeat.get('api_key')}"
+            if filebeat.get('_id') is not None:
+                filebeat_data['output.elasticsearch.api_key'] = f"{filebeat.get('_id')}:{filebeat.get('api_key')}"
+            else:
+                print('Error in Filebeat: No Filebeat API Key.')
 
             create_file_beat(filebeat_data, filebeat.get('conf_address'))
             
