@@ -100,7 +100,8 @@ NOTICE:
 	After this operation you won't be able to access SSH service at port $current_port anymore.
 	The SSH port will be changed to $DEFAULT_SSH_PORT
 	
-	
+
+
 	
 "
 		set -x;
@@ -136,3 +137,58 @@ function snmpd_initial_conf () {
 		set -x
 	fi
 }
+
+function disable_stop_systemd_resolved () {
+	
+	systemctl disable systemd-resolved
+	systemctl stop systemd-resolved
+}
+
+function save_current_nameserver_conf_and_disable_resolved () {
+
+# This function enables django to be able to change the
+# nameservers by simply editing /etc/resolv.conf .
+	
+	local nameserver1="1.1.1.1"
+	local nameserver2="9.9.9.9"
+	local current_etc_resolve_conf=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+	local netplan_conf_file=`ls /etc/netplan/*.y*ml | head -1`
+	
+	if [[ $current_etc_resolve_conf == "127.0.0.53" ]]
+	then 
+		
+		local nameserver1_temp=`yq -e '.network.*.*.nameservers.addresses[]'  ${netplan_conf_file} | head -1 `
+		local nameserver2_temp=`yq -e '.network.*.*.nameservers.addresses[]'  ${netplan_conf_file} | head -2 | tail -1`
+		
+		if [[ -z $nameserver1_temp ]]
+		then
+			nameserver1=`echo nameserver1_temp`
+			if [[-z $nameserver1_temp ]]
+			then 
+				nameserver2=`echo nameserver2_temp`
+			fi
+		fi
+	else
+		if [[ -n $current_etc_resolve_conf ]]
+		then
+			local nameserver1_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1 `
+			local nameserver2_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1`
+			if [[ -z $nameserver1_temp ]]
+			then
+				nameserver1=`echo nameserver1_temp`
+				if [[-z $nameserver1_temp ]]
+				then 
+					nameserver2=`echo nameserver2_temp`
+				fi
+			fi
+		fi
+	fi
+	
+	chattr -i /etc/resolv.conf
+	rm /etc/resolv.conf
+	disable_stop_systemd_resolved
+	echo "nameserver $nameserver1\nnameserver $nameserver2" > /etc/resolv.conf
+		
+
+}
+
