@@ -112,3 +112,27 @@ NOTICE:
 	
 }
 
+
+function snmpd_initial_conf () {
+	
+# This function checks if wanpad has already configured this service 
+# or not. if not it overrides the configuration with a default conf.
+
+	local wanpad_conf_message="# Configured By WANPAD"
+	local service='snmp'
+	local daemon='snmpd'
+	local flag=`grep "${wanpad_conf_message}" /etc/${service}/${daemon}.conf`
+	
+	if [[ -z $flag ]]
+	then
+		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" "/etc/${service}/${daemon}.conf"
+		systemctl stop ${daemon}
+		set +x
+		echo "snmp is not yet configured by wanpad"
+		set -x
+	else
+		set +x
+		echo "snmp is already configured by wanpad"
+		set -x
+	fi
+}
