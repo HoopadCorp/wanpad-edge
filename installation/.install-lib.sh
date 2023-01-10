@@ -114,6 +114,9 @@ NOTICE:
 
 
 function snmpd_initial_conf () {
+	
+# This function checks if wanpad has already configured this service 
+# or not. if not it overrides the configuration with a default conf.
 
 	local wanpad_conf_message=""
 	local service='snmp'
