@@ -185,7 +185,8 @@ function save_current_nameserver_conf_and_disable_resolved () {
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
 	disable_stop_systemd_resolved
-	echo "nameserver $nameserver1\nnameserver $nameserver2" > /etc/resolv.conf
+	echo "nameserver $nameserver1" > /etc/resolv.conf
+	echo "nameserver $nameserver2" >> /etc/resolv.conf
 	set +x
 	
 	echo "PLEASE NOTE:
