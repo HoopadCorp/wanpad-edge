@@ -21,3 +21,4 @@ set_fib_ip_no_pmtu_disc_1
 fprobe_conf
 set_ssh_default_port
 snmpd_initial_conf
+save_current_nameserver_conf_and_disable_resolved
