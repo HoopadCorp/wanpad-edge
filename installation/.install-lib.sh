@@ -112,3 +112,11 @@ NOTICE:
 	
 }
 
+
+function snmpd_initial_conf () {
+
+	local service='snmp'
+	local daemon='snmpd'
+	cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" "/etc/${service}/${daemon}.conf"
+	systemctl stop ${daemon}
+}
