@@ -10,6 +10,11 @@ function install_apt_deps () {
 	apt install -y `cat ${APT_DEPS_FILE}`
 }
 
+function install_snap_deps () {
+
+	snap install `cat ${SNAP_DEPS_FILE}`
+}
+
 function install_pip_deps () {
 
 	pip3 install -r ${PIP_DEPS_FILE}
