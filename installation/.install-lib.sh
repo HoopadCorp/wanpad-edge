@@ -122,9 +122,14 @@ function snmpd_initial_conf () {
 	local service='snmp'
 	local daemon='snmpd'
 	flag=`grep "${wanpad_conf_message}" /etc/${service}/${daemon}.conf`
+	
 	if [ -z $flag ]
 	then
-	cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" "/etc/${service}/${daemon}.conf"
-	systemctl stop ${daemon}
+		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" "/etc/${service}/${daemon}.conf"
+		systemctl stop ${daemon}
+	else
+		set +x
+		echo "snmp is already configured by wanpad"
+		set -x
 	fi
 }
