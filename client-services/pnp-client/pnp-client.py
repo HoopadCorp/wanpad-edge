@@ -19,8 +19,6 @@ filebeat_data = {'filebeat.config': {'modules': {'path': '${path.config}/modules
                                                                                                 'var.input': 'file'}},
                      {'module': 'netflow',
                       'log': {'enabled': True, 'var': {'netflow_host': '0.0.0.0', 'netflow_port': 2055}}}],
-                 'output.elasticsearch': {
-                     'ssl.certificate_authorities': ['/usr/local/share/ca-certificates/WANPAD.crt'], 'hosts': 'ENV_ME'},
                 'setup.ilm.enabled': True,
                  'setup.ilm.rollover_alias': 'filebeat', 'setup.ilm.pattern': '{now/d}-000001',
                  'output.elasticsearch.index': 'filebeat-%{[agent.version]}-%{+yyyy.MM.dd}',
