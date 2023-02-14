@@ -43,7 +43,7 @@ Please Provide the following information:
 
 set_django_port () {
 	
-	is_mobinnet=`echo $URI | grep mobinnet`
+	is_mobinnet=`echo $URI | grep mobinnet || true`
 	if [[ -n $is_mobinnet ]]
 	then
 		DJANGO_PORT=3001
