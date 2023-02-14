@@ -21,7 +21,7 @@ case "$NA" in
 		;;
 esac
 
-
+set_django_port
 validate_token
 change_env_file
 run_pnp_client_py
