@@ -41,12 +41,22 @@ Please Provide the following information:
 	echo $URI $TOKEN
 }
 
+set_django_port () {
+	
+	is_mobinnet=`echo $URI | grep mobinnet`
+	if [[ -n $is_mobinnet ]]
+	then
+		DJANGO_PORT=3001
+	else
+		DJANGO_PORT=8001
+	fi
+}
 
 validate_token () {
 
 	#local URL=`echo $URI | cut -d '/' -f3`
 
-	local val_status_code=`curl -is -X POST https://${URI}:8001/wanpad/api/v1/auth/validate_token/ \
+	local val_status_code=`curl -is -X POST https://${URI}:${DJANGO_PORT}/wanpad/api/v1/auth/validate_token/ \
 		    -H 'Content-Type: application/json' \
 		        -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/" | awk '{print $2}'`
 	
@@ -59,7 +69,8 @@ validate_token () {
 			exit 1
 			;;
 		*)
-			echo something went wrong. Please check your token again and if the problem still remains, reach out to our technical support.
+			echo something went wrong. Please check your token again and 
+			the problem still remains, reach out to our technical support.
 			exit 1
 			;;
 		esac
@@ -67,7 +78,7 @@ validate_token () {
 
 change_env_file () {
 
-	echo "URI=https://$URI:8001/wanpad/api/v1/devices/plug_play/" > ${ZTP_ENV_FILE}
+	echo "URI=https://$URI:${DJANGO_PORT}/wanpad/api/v1/devices/plug_play/" > ${ZTP_ENV_FILE}
 	echo "TOKEN=$TOKEN" >> ${ZTP_ENV_FILE}
 }
 
