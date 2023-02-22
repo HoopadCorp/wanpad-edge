@@ -7,7 +7,6 @@ set -euo pipefail
 
 force_run_as_root
 force_root_home_dir
-set +x
 	
 #number of arguments
 NA=`echo $* | wc -w `
