@@ -49,7 +49,7 @@ set +x
   pwd=`pwd`
   if [[ $pwd =~ /root.* ]]
   then
-  echo ""
+  set -x
   else
   
   ERROR_MSG="You need to clone the repo under \"/root\""
