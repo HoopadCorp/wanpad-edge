@@ -16,7 +16,7 @@ function force_run_as_root () {
 function force_root_home_dir () {
 
   pwd=`pwd`
-  if [[ $pwd ~= /root.* ]]
+  if [[ $pwd =~ /root.* ]]
   then
   else
   echo "you need to clone the repo under \"/root\"
