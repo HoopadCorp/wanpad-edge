@@ -9,7 +9,8 @@ function force_run_as_root () {
   echo "Please login as user \"root\" and try again.
   You can do this by running: 
   \"sudo -i\""
-  exit 1
+  exit 
+  fi
 }
 
 function force_root_home_dir () {
@@ -23,4 +24,5 @@ function force_root_home_dir () {
   \"git clone https://github.com/HoopadCorp/wanpad-edge.git\"
   "
   exit 1
+  fi
 }
