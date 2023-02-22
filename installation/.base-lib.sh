@@ -9,8 +9,8 @@ function force_run_as_root () {
   uid=`id -u`
   if [[ $uid != 0 ]]
   then
-  echo -e "
-  ${RED} ERROR:
+  echo -e "${RED}
+ ERROR:
   Please login as user \"root\" and try again.
   ${NC}You can do this by running: 
   ${Green}
@@ -27,8 +27,8 @@ function force_root_home_dir () {
   then
   echo ""
   else
-  echo -e "
-  ${RED} ERROR:
+  echo -e "${RED} 
+ ERROR:
   You need to clone the repo under \"/root\"
   ${NC}You can do this by running:
   ${Green}
