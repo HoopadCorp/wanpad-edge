@@ -2,6 +2,7 @@
 
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+Green='\033[0;32m'
 
 function force_run_as_root () {
 
@@ -11,6 +12,7 @@ function force_run_as_root () {
   echo -e "${RED}
   Please login as user \"root\" and try again.
   You can do this by running: 
+  ${Green}
   \"sudo -i\"
   ${NC}"
   exit 
@@ -27,6 +29,7 @@ function force_root_home_dir () {
   echo -e "${RED}
   you need to clone the repo under \"/root\"
   You can do this by running:
+  ${Green}
   \"cd /root/\"
   \"git clone https://github.com/HoopadCorp/wanpad-edge.git\"
   ${NC}"
