@@ -3,6 +3,11 @@
 set -euo pipefail
 . ./.ztp-lib.sh
 . .env
+. ./.base-lib.sh
+
+force_run_as_root
+force_root_home_dir
+
 	
 #number of arguments
 NA=`echo $* | wc -w `
