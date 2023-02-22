@@ -2,11 +2,6 @@
 
 # DEBUG MODE:
 #set -euxo pipefail
-. ./.base-lib.sh
-
-force_run_as_root
-force_root_home_dir
-
 usage () {
 	
 	echo "
