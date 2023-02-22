@@ -24,7 +24,8 @@ function print_green () {
   echo -e "${GREEN}
   ${GREEN_MSG}
   ${NC}
-  "}
+  "
+}
 
 function force_run_as_root () {
 
