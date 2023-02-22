@@ -23,7 +23,6 @@ function print_green () {
 }
 
 function force_run_as_root () {
-set +x
 
   uid=`id -u`
   if [[ $uid != 0 ]]
@@ -36,20 +35,17 @@ set +x
   You can do this by running: "
   GREEN_MSG="sudo -i"
   print_green
- 
-set -x && exit 1
+  exit 1
   fi
   
-set -x
 }
 
 function force_root_home_dir () {
-set +x
 
   pwd=`pwd`
   if [[ $pwd =~ /root.* ]]
   then
-  set -x
+  echo ""
   else
   
   ERROR_MSG="You need to clone the repo under \"/root\""
@@ -60,8 +56,6 @@ set +x
   GREEN_MSG="cd /root/
   git clone https://github.com/HoopadCorp/wanpad-edge.git"
   print_green
- 
-  set -x && exit 1
+  exit 1
   fi
-set -x
 }
