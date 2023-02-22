@@ -1,16 +1,18 @@
 #!/bin/bash
 
 RED='\033[0;31m'
-
+NC='\033[0m' # No Color
 
 function force_run_as_root () {
 
   uid=`id -u`
   if [[ $uid != 0 ]]
   then
-  echo -e "${RED}Please login as user \"root\" and try again.
+  echo -e "${RED}
+  Please login as user \"root\" and try again.
   You can do this by running: 
-  \"sudo -i\""
+  \"sudo -i\"
+  ${NC}"
   exit 
   fi
 }
@@ -22,11 +24,12 @@ function force_root_home_dir () {
   then
   echo ""
   else
-  echo -e "${RED}you need to clone the repo under \"/root\"
+  echo -e "${RED}
+  you need to clone the repo under \"/root\"
   You can do this by running:
   \"cd /root/\"
   \"git clone https://github.com/HoopadCorp/wanpad-edge.git\"
-  "
+  ${NC}"
   exit 1
   fi
 }
