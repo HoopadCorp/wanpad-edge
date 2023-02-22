@@ -4,9 +4,10 @@ set -euo pipefail
 . ./.env
 . ./.install-lib.sh
 . ./.base-lib.sh
-
+set +x
 force_run_as_root
 force_root_home_dir
+set -x
 create_hoopad_user || true
 install_apt_deps
 install_snap_deps
