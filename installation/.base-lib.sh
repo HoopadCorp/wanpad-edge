@@ -8,15 +8,17 @@ function print_error () {
 # usage:
 # ERROR_MSG="some error"
 # print_error
-
+set +x
   echo -e "${RED}
  ERROR:
   ${ERROR_MSG}
   ${NC}
   "
+set -x
 }
 
 function print_green () {
+set +x
 # usage:
 # GREEN_MSG="some solution"
 # print_green
@@ -25,9 +27,11 @@ function print_green () {
   ${GREEN_MSG}
   ${NC}
   "
+set -x
 }
 
 function force_run_as_root () {
+set +x
 
   uid=`id -u`
   if [[ $uid != 0 ]]
@@ -39,20 +43,15 @@ function force_run_as_root () {
   You can do this by running: "
   GREEN_MSG="sudo -i"
   print_green
-  
-  
-#  echo -e "${RED}
-# ERROR:
-#  Please login as user \"root\" and try again.
-#  ${NC}You can do this by running: 
-#  ${Green}
-#  sudo -i
-#  ${NC}"
-  exit 1
+ 
+set -x && exit 1
   fi
+  
+set -x
 }
 
 function force_root_home_dir () {
+set +x
 
   pwd=`pwd`
   if [[ $pwd =~ /root.* ]]
@@ -68,16 +67,8 @@ function force_root_home_dir () {
   GREEN_MSG="cd /root/
   git clone https://github.com/HoopadCorp/wanpad-edge.git"
   print_green
-  
-  
-#  echo -e "${RED} 
-# ERROR:
-#  You need to clone the repo under \"/root\"
-#  ${NC}You can do this by running:
-#  ${Green}
-#  cd /root/
-#  git clone https://github.com/HoopadCorp/wanpad-edge.git
-#  ${NC}"
-  exit 1
+ 
+  set -x && exit 1
   fi
+set -x
 }
