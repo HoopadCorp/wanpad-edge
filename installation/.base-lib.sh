@@ -9,9 +9,9 @@ function force_run_as_root () {
   uid=`id -u`
   if [[ $uid != 0 ]]
   then
-  echo -e "${RED}
+  echo -e "${RED} ERROR:
   Please login as user \"root\" and try again.
-  You can do this by running: 
+  ${NC}You can do this by running: 
   ${Green}
   \"sudo -i\"
   ${NC}"
@@ -26,9 +26,9 @@ function force_root_home_dir () {
   then
   echo ""
   else
-  echo -e "${RED}
-  you need to clone the repo under \"/root\"
-  You can do this by running:
+  echo -e "${RED} ERROR:
+  You need to clone the repo under \"/root\"
+  ${NC}You can do this by running:
   ${Green}
   \"cd /root/\"
   \"git clone https://github.com/HoopadCorp/wanpad-edge.git\"
