@@ -10,9 +10,7 @@ function print_error () {
 # print_error
   echo -e "${RED}
  ERROR:
-  ${ERROR_MSG}
-  ${NC}
-  "
+  ${ERROR_MSG}${NC}"
 }
 
 function print_green () {
@@ -21,9 +19,7 @@ function print_green () {
 # print_green
 
   echo -e "${GREEN}
-  ${GREEN_MSG}
-  ${NC}
-  "
+  ${GREEN_MSG}${NC}"
 }
 
 function force_run_as_root () {
