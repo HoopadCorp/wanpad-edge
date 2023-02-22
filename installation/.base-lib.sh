@@ -8,17 +8,14 @@ function print_error () {
 # usage:
 # ERROR_MSG="some error"
 # print_error
-set +x
   echo -e "${RED}
  ERROR:
   ${ERROR_MSG}
   ${NC}
   "
-set -x
 }
 
 function print_green () {
-set +x
 # usage:
 # GREEN_MSG="some solution"
 # print_green
@@ -27,7 +24,6 @@ set +x
   ${GREEN_MSG}
   ${NC}
   "
-set -x
 }
 
 function force_run_as_root () {
@@ -38,6 +34,7 @@ set +x
   then
   ERROR_MSG="Please login as user \"root\" and try again."
   print_error
+  
   
   echo "
   You can do this by running: "
