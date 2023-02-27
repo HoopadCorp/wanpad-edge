@@ -11,7 +11,7 @@
 
 ## Prerequisites
 
-For WANPAD controller to be able to work with your Device you need the following requirements:
+For WANPAD controller to be able to work with your Device (SDWAN Edge) you need the following requirements:
 
 - **Supported Operating Systems:**
 
