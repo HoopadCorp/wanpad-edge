@@ -6,7 +6,7 @@ Description=WANPAD startup service
 [Service]
 Type=simple
 User=root
-ExecStart=/etc/wanpad/client-services/wanpad-startup/startup.sh
+ExecStart=/etc/wanpad/wanpad-startup/startup.sh
 
 [Install]
 WantedBy=multi-user.target
