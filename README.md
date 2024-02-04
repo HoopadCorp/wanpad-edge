@@ -8,7 +8,6 @@
   - [Provision your device](#provision-your-device)
 - [Contributions](#Contributions)
 
-
 ## Prerequisites
 
 For WANPAD controller to be able to work with your Device (SDWAN Edge) you need the following requirements:
@@ -17,7 +16,7 @@ For WANPAD controller to be able to work with your Device (SDWAN Edge) you need 
 
 | OS | Architecture |
 |---|---|
-| Ubuntu:20.04 | x86_64 |
+| Ubuntu:22.04 | x86_64 |
 | Armbian 22.02.1 | armv7l |
 
 
