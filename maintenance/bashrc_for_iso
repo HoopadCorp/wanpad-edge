@@ -1,6 +1,7 @@
+#!/bin/bash
 ### Customized Bash.bashrc
 
-if [[ -e /root/wanpad_os/maintenance/firts_run_status ]]
+if [[ -e /root/wanpad_os/maintenance/first_run_status ]]
 then
         return 0
 else
@@ -14,6 +15,6 @@ else
         echo -n "Enter DNS:(comma separated format e.g: 1.1.1.1,9.9.9.9) "
         read "DNS"
 
-        ./startup_cmd.sh "$HOSTNAME" "$IP" "$GW" "$DNS" && touch /root/wanpad_os/maintenance/firts_run_status
+        ./startup_cmd.sh "$HOSTNAME" "$IP" "$GW" "$DNS" && touch /root/wanpad_os/maintenance/first_run_status
 
 fi
