@@ -157,25 +157,13 @@ function save_current_nameserver_conf_and_disable_resolved () {
 	nameserver1="1.1.1.1"
 	nameserver2="9.9.9.9"
 	current_etc_resolv_conf=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
-	netplan_conf_file=`ls /etc/netplan/*.y*ml | head -1`
-	if [[ $current_etc_resolv_conf == "127.0.0.53" ]]
-	then 
-		nameserver1_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1 `
-		nameserver2_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1`
-		
-		if [[ -n $nameserver1_temp ]]
-		then
-			nameserver1=`echo $nameserver1_temp`
-			if [[ -n $nameserver1_temp ]]
-			then 
-				nameserver2=`echo $nameserver2_temp`
-			fi
-		fi
-	else
-		if [[ -n $current_etc_resolv_conf ]]
-		then
-			nameserver1_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1 `
-			nameserver2_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1`
+ 	if [ -n "$(netplan get)" ]; then
+		netplan_conf_file=`ls /etc/netplan/*.y*ml | head -1`
+		if [[ $current_etc_resolv_conf == "127.0.0.53" ]]
+		then 
+			nameserver1_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1 `
+			nameserver2_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1`
+			
 			if [[ -n $nameserver1_temp ]]
 			then
 				nameserver1=`echo $nameserver1_temp`
@@ -184,8 +172,22 @@ function save_current_nameserver_conf_and_disable_resolved () {
 					nameserver2=`echo $nameserver2_temp`
 				fi
 			fi
+		else
+			if [[ -n $current_etc_resolv_conf ]]
+			then
+				nameserver1_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1 `
+				nameserver2_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1`
+				if [[ -n $nameserver1_temp ]]
+				then
+					nameserver1=`echo $nameserver1_temp`
+					if [[ -n $nameserver1_temp ]]
+					then 
+						nameserver2=`echo $nameserver2_temp`
+					fi
+				fi
+			fi
 		fi
-	fi
+  	fi
 	
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
