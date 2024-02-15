@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Copyright (c) 2023-2024, Seyed Pouria Mousavizadeh Tehrani <p.mousavizadeh@protonmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+PATH=${PATH}:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+. /usr/local/share/wanpad/common.sh
+. /usr/local/etc/wanpad/wanpad.conf
+
+## version
+WANPAD_VERSION="3.0.0"
+
+usage()
+{
+    cat << EOF
+wanpadctl(8) is an open-source utility for automating deployment and management of
+WANPAD edges for SD-WAN controller.
+
+Usage:
+  wanpadctl command [args]
+
+Available Commands:
+  install   prepare and set up operating system to function as edge device.
+  init      join to WANPAD controller.
+  oob       connect to WANPAD controller using oob network.
+  lte       configure lte module. (if any exists.)
+
+Use "wanpad -v|--version" for version information.
+Use "wanpad command -h|--help" for more information about a command.
+
+EOF
+    exit 1
+}
+
+[ $# -lt 1 ] && usage
+
+CMD=$1
+shift
+
+# Handle special-case commands first.
+case "${CMD}" in
+version|-v|--version)
+    echo "${WANPAD_VERSION}"
+    exit 0
+    ;;
+help|-h|--help)
+    usage
+    ;;
+esac
+
+SCRIPTPATH="/usr/local/share/wanpad/${CMD}.sh"
+if [ -f "${SCRIPTPATH}" ]; then
+    : "${UMASK:=022}"
+    umask "${UMASK}"
+
+    : "${SH:=sh}"
+    exec "${SH}" "${SCRIPTPATH}" "$@"
+else
+    error_exit "${SCRIPTPATH} not found."
+fi

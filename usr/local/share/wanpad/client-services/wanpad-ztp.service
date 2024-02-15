@@ -1,0 +1,14 @@
+[Unit]
+Description=WANPAD Zero Touch Provisioning client side service
+Requires=wanpad-oob.service network.target network-online.target
+[Service]
+Type=forking
+User=root
+WorkingDirectory=/usr/local/etc/wanpad/
+ExecStartPre=sleep 30s
+ExecStart=python3 /usr/local/share/wanpad/ztp/pnp-client.py
+Restart=on-failure
+RestartSec=4
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+# General
+DEFAULT_NS1=1.1.1.1
+DEFAULT_NS2=9.9.9.9
+RESTORE_KEY=false
+
+# Let it be empty if you want it to automatically detect the interface name.
+INTERFACE_NAME=
+
+# Installation
+WANPAD_USERNAME=hoopad
+DEFAULT_SSH_PORT=24489
+CLIENT_SERVICES_DIR="/usr/local/share/wanpad/client-services"
+
+# ZTP
+URI=https://deploy.wanpad.ir:8001/wanpad/api/v1/devices/plug_play/
+CONTROLLER_API_PORT=8001
+TOKEN=
+
+# OpenVPN Client
+OOB_CONFIG_FILE=/usr/local/etc/wanpad/client.ovpn

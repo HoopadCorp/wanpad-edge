@@ -1,0 +1,13 @@
+[Unit]
+Requires=network-online.target network.target
+After=network-online.target network.target
+Description=WANPAD Controller Out of Band VPN Connect
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/etc/wanpad/
+ExecStart=/usr/local/bin/wanpadctl oob
+
+[Install]
+WantedBy=multi-user.target
