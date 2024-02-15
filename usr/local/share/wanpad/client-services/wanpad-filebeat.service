@@ -1,0 +1,12 @@
+[Unit]
+Description=WANPAD netflow service
+Requires=network.target network-online.target
+[Service]
+Type=simple
+User=root
+ExecStart=filebeat -e -c /usr/local/etc/wanpad/filebeat/filebeat.yml --path.home /usr/local/share/wanpad/client-services/filebeat/
+Restart=on-failure
+RestartSec=4
+
+[Install]
+WantedBy=multi-user.target

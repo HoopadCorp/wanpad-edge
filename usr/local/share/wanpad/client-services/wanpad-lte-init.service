@@ -1,0 +1,14 @@
+[Unit]
+Requires=network-online.target network.target 
+After=network-online.target network.target 
+Description=WANPAD LTE init
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/share/wanpad/lte/init.sh
+RestartSec=5s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

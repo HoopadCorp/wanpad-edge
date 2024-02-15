@@ -1,5 +1,1 @@
-**.env
-.env
-**/**.env
 **/client-services/filebeat/
-**/client-services/filebeat/*.*
