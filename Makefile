@@ -119,9 +119,9 @@ liteinstall: litedeps
 	@chmod +x ${WANPAD_CMD}
 	@echo "Make it administration cli tool only"
 	@if [ "${OS}" = "FreeBSD" ]; then\
-		sed -i '' '1s/$$/\nexport LITE_VERSION=true/' /usr/local/share/wanpad/common.sh;\
+		sed -i '' '1s/$$/\nLITE_VERSION=true/' ${WANPAD_CMD};\
 	else\
-		sed -i -e '1s/$$/\nexport LITE_VERSION=true/' /usr/local/share/wanpad/common.sh;\
+		sed -i -e '1s/$$/\nLITE_VERSION=true/' ${WANPAD_CMD};\
 	fi
 	@echo
 	@echo "Installing wanpad configuration"

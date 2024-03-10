@@ -15,40 +15,27 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-PATH=${PATH}:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+## version
+WANPAD_VERSION="3.0.0"
 
 . /usr/local/share/wanpad/common.sh
 . /usr/local/etc/wanpad/wanpad.conf
 
-## version
-WANPAD_VERSION="3.0.0"
-
-usage()
-{
-    cat << EOF
-wanpadctl(8) is an open-source utility for automating deployment and management of
-WANPAD edges for SD-WAN controller.
-
-Usage:
-  wanpadctl command [args]
-
-Available Commands:
-  install   prepare and set up operating system to function as edge device.
-  init      join to WANPAD controller.
-  oob       connect to WANPAD controller using oob network.
-  lte       configure lte module. (if any exists.)
-
-Use "wanpad -v|--version" for version information.
-Use "wanpad command -h|--help" for more information about a command.
-
-EOF
-    exit 1
-}
-
 [ $# -lt 1 ] && usage
 
-CMD=$1
+export CMD=$1
 shift
+
+if [ -n "$LITE_VERSION" ]
+then
+    if [ "$CMD" != "adm" ]
+    then
+        echo "Error: Sub-commands other than 'adm' are not supported in the WANPAD Edge Lite version."
+        echo "Lite version is administration only."
+        echo "Please install WANPAD Edge for full installation."
+        exit 1
+    fi
+fi
 
 # Handle special-case commands first.
 case "${CMD}" in

@@ -76,3 +76,25 @@ get_scheme()
     export CONTROLLER_SCHEME="http"
   fi
 }
+
+usage()
+{
+    cat << EOF
+wanpadctl(8) is an open-source utility for automating deployment and management of
+WANPAD edges for SD-WAN controller.
+
+Usage:
+  wanpadctl command [args]
+
+Available Commands:
+  install   prepare and set up operating system to function as edge device.
+  init      join to WANPAD controller.
+  oob       connect to WANPAD controller using oob network.
+  lte       configure lte module. (if any exists.)
+
+Use "wanpad -v|--version" for version information.
+Use "wanpad command -h|--help" for more information about a command.
+
+EOF
+    exit 1
+}
