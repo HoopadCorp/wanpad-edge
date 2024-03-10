@@ -16,3 +16,44 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 . /usr/local/share/wanpad/common.sh
+
+if [ "$1" = "get" ]
+then
+    if [ "$2" = "device" ]
+    then
+        if [ "$3" = "group" ]
+        then
+            get_device_group $4
+        fi
+    fi
+# elif [ "$1" = "add" ]
+# then
+#     if [ "$2" = "device" ]
+#     then
+#         if [ "$3" = "group" ]
+#         then
+#             add_device_group $4
+#         fi
+#     fi
+elif [ "$1" = "set" ]
+then
+    if [ "$2" = "bgp" ]
+    then
+        if [ "$3" = "mesh" ]
+        then
+            shift 3
+            if [ $# -ne 2 ]
+            then
+                bgp_mesh_usage
+                exit 1
+            fi
+            bgp_mesh_selected_device "$1" "$2"
+        fi
+    fi
+elif [ "$1" = "show" ]
+then
+    if [ "$2" = "device" ]
+    then
+        show_devices
+    fi
+fi

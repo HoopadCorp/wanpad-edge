@@ -14,9 +14,9 @@ all:
 litedeps:
 	@echo "Install lite version dependencies"
 	@if [ -e /etc/debian_version ]; then\
-		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git build-essential sudo git-lfs;\
+		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git build-essential sudo git-lfs jq;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
-		pkg install -y git python3 sudo;\
+		pkg install -y git python3 sudo jq;\
 	fi
 
 
@@ -25,9 +25,9 @@ deps:
 	@echo "Install applications"
 	@if [ -e /etc/debian_version ]; then\
 		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential\
-		 python3-dev strongswan strongswan-starter frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs;\
+		 python3-dev strongswan strongswan-starter frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs jq;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
-		pkg install -y git openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go;\
+		pkg install -y git openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go jq;\
 	fi
 	@echo
 	@echo "Install python applications"

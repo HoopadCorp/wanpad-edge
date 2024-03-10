@@ -18,25 +18,18 @@
 
 OSKERNEL=$(uname -s)
 
-RED='\033[0;31m'
-NC='\033[0m' # No Color
-
-print_error ()
+print_error()
 {
-# usage:
-# ERROR_MSG="some error"
-# print_error
-  echo -e "${RED}
- ERROR:
-  ${ERROR_MSG}${NC}"
+  local RED='\033[0;31m'
+  local NC='\033[0m' # No Color
+  printf "${RED}ERROR:\t$1${NC}\n"
 }
 
 force_run_as_root()
 {
   uid=`id -u`
   if [ $uid != 0 ]; then
-    ERROR_MSG="Please run as \"root\" and try again."
-    print_error
+    print_error "Please run as \"root\" and try again."
     exit 1
   fi
 }
@@ -97,4 +90,29 @@ Use "wanpad command -h|--help" for more information about a command.
 
 EOF
     exit 1
+}
+
+get_api()
+{
+	local CONTROLLER_API_PATH="$1"
+
+	# Run get scheme for CONTROLLER_SCHEME variable
+	get_scheme
+
+	local CONTROLLER_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
+
+	curl -s -X GET $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -w "%{json}"
+}
+
+post_api()
+{
+	local CONTROLLER_API_PATH="$1"
+  local data="$2"
+
+	# Run get scheme for CONTROLLER_SCHEME variable
+	get_scheme
+
+	local CONTROLLER_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
+
+	curl -s -X POST $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -d "$data" -w "%{json}"
 }

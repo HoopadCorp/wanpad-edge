@@ -28,29 +28,20 @@ Please Provide the following information:
 
 validate_token()
 {
-	local CONTROLLER_TOKEN_VALIDATION_API_PATH="/wanpad/api/v1/auth/validate_token/"
+	local response_json="$(get_api /wanpad/api/v1/auth/validate_token/)"
 
-	# Run get scheme for CONTROLLER_SCHEME variable
-	get_scheme()
-
-	# Set globally for python script
-	export CONTROLLER_TOKEN_VALIDATION_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_TOKEN_VALIDATION_API_PATH}"
-
-	local val_status_code=`curl -is -X POST $CONTROLLER_TOKEN_VALIDATION_URL \
-		    -H 'Content-Type: application/json' \
-		    -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/" | awk '{print $2}'`
+    local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
 	
 	case $val_status_code in
 		200)
 			echo Great! your token is valid.
 			;;
 		4??)
-			echo Sorry your token is not valid. Please check your token again or make a new one.
+			print_error "Sorry your token is not valid. Please check your token again or make a new one."
 			exit 1
 			;;
 		*)
-			echo Something went wrong. Please check your token again and 
-			the problem still remains, reach out to our technical support.
+			print_error "Something went wrong. Please check your token again and the problem still remains, reach out to our technical support."
 			exit 1
 			;;
 	esac
