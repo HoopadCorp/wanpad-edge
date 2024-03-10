@@ -17,6 +17,21 @@
 
 # This file exists for administration of the WANPAD controller. Will be completed in the near future.
 
+adm_usage()
+{
+    cat << EOF
+Usage:
+  wanpadctl adm COMMAND [args]
+
+COMMAND
+    Specifies the action to perform on the object.  The set of possible actions depends on the object type.  As a rule, it is possible to add, delete and show (or list ) objects, but some objects
+    do not allow all of these operations or have some additional commands. The help command is available for all objects.
+
+Use "wanpad -v|--version" for version information.
+EOF
+    exit 1
+}
+
 bgp_mesh_usage()
 {
     echo -e "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]"
@@ -89,6 +104,43 @@ bgp_mesh_selected_device()
 show_devices()
 {
 	local response_json="$(get_api /wanpad/api/v1/devices/devices-list/)"
+
+    local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
+
+	case $val_status_code in
+		200)
+            echo $response_json | jq -s '.[0]'
+			;;
+		*)
+			print_error "Something went wrong. Please check your token again and the problem still remains, reach out to our technical support."
+            echo $response_json | jq
+			exit 1
+			;;
+	esac
+}
+
+get_device()
+{
+    number_validator $1 || adm_usage
+	local response_json="$(get_api /wanpad/api/v1/devices/devices-list/$1/)"
+
+    local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
+
+	case $val_status_code in
+		200)
+            echo $response_json | jq -s '.[0]'
+			;;
+		*)
+			print_error "Something went wrong. Please check your token again and the problem still remains, reach out to our technical support."
+            echo $response_json | jq
+			exit 1
+			;;
+	esac
+}
+
+show_device_by_name()
+{
+	local response_json="$(get_api /wanpad/api/v1/devices/devices-list/?search="$1")"
 
     local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
 

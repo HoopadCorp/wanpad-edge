@@ -103,6 +103,32 @@ git clone https://github.com/HoopadCorp/wanpad-edge.git
 make liteinstall
 ```
 
+## Admin CLI
+
+### Show list of device names
+
+```sh
+wanpadctl adm show device | jq '[.results[].name]'
+```
+
+### Show list of device id
+
+```sh
+wanpadctl adm show device | jq '[.results[].id]'
+```
+
+### Search device by name
+
+```sh
+wanpadctl adm show device name wpe-210
+```
+
+### Get device info
+
+```sh
+wanpadctl adm get device info ID
+```
+
 # Contributions
 
 Any PR(s) are welcomed.

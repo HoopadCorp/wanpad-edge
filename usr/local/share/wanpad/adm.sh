@@ -17,6 +17,13 @@
 
 . /usr/local/share/wanpad/common.sh
 
+# Handle special-case commands first.
+case "$1" in
+help|-h|--help)
+    adm_usage
+    ;;
+esac
+
 if [ "$1" = "get" ]
 then
     if [ "$2" = "device" ]
@@ -24,6 +31,9 @@ then
         if [ "$3" = "group" ]
         then
             get_device_group $4
+        elif [ "$3" = "info" ]
+        then
+            get_device $4
         fi
     fi
 # elif [ "$1" = "add" ]
@@ -54,6 +64,12 @@ elif [ "$1" = "show" ]
 then
     if [ "$2" = "device" ]
     then
-        show_devices
+        if [ -z "$3" ]
+        then
+            show_devices
+        elif [ "$3" = "name" ]
+        then
+            show_device_by_name "$4"
+        fi
     fi
 fi

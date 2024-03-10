@@ -25,6 +25,18 @@ print_error()
   printf "${RED}ERROR:\t$1${NC}\n"
 }
 
+number_validator()
+{
+  case $1 in
+      ''|*[!0-9]*)
+      false
+      ;;
+      *)
+      true
+      ;;
+  esac
+}
+
 force_run_as_root()
 {
   uid=`id -u`
