@@ -12,9 +12,14 @@ DEFAULT_SSH_PORT=24489
 CLIENT_SERVICES_DIR="/usr/local/share/wanpad/client-services"
 
 # ZTP
-URI=https://deploy.wanpad.ir:8001/wanpad/api/v1/devices/plug_play/
+CONTROLLER_DOMAIN=deploy.wanpad.ir
 CONTROLLER_API_PORT=8001
+
+# Controller Token
 TOKEN=
+
+# SSL for controller connectivity
+SSL=true
 
 # OpenVPN Client
 # The ".ovpn" file must be located under /usr/local/etc/wanpad/ directory.

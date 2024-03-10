@@ -78,18 +78,18 @@ You'll be prompted to enter your controller URL and access token:
 
 ```
 Please Provide the following information:
-WANPAD controller URI: <URI HERE>
+WANPAD controller address: <DOMAIN HERE>
 Your access token: <TOKEN HERE>
 ```
 
-- **URI format**: `controller.wanpad.ir`
+- **DOMAIN format**: `controller.wanpad.ir`
 
 After the prompt return, you should be able to access your device through the controller panel.
 
 - **NOTE:** You can also run the script in **non-interactive** mode, doing:
 
 ```sh
-wanpadctl <URL HERE> <TOKEN HERE>
+wanpadctl <DOMAIN HERE> <TOKEN HERE>
 ```
 
 ## Lite Version

@@ -41,7 +41,7 @@ force_run_as_root()
   fi
 }
 
-getArch()
+get_arch()
 {
   ARCH=$(uname -m)
   case $ARCH in
@@ -65,4 +65,14 @@ getArch()
       exit 1
     ;;
   esac
+}
+
+get_scheme()
+{
+  if [ "$SSL" = "true" ]
+  then
+    export CONTROLLER_SCHEME="https"
+  else
+    export CONTROLLER_SCHEME="http"
+  fi
 }

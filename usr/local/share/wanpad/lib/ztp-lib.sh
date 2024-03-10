@@ -21,14 +21,22 @@ ztp_dialogue()
 	echo "
 Please Provide the following information:
 "
-	read -r -p "WANPAD controller URI: " "URI"
+	read -r -p "WANPAD controller address: " "CONTROLLER_DOMAIN"
 	read -r -p "Your access token: " "TOKEN"
-	echo $URI $TOKEN
+	echo $CONTROLLER_DOMAIN $TOKEN
 }
 
 validate_token()
 {
-	local val_status_code=`curl -is -X POST https://${URI}:${CONTROLLER_API_PORT}/wanpad/api/v1/auth/validate_token/ \
+	local CONTROLLER_TOKEN_VALIDATION_API_PATH="/wanpad/api/v1/auth/validate_token/"
+
+	# Run get scheme for CONTROLLER_SCHEME variable
+	get_scheme()
+
+	# Set globally for python script
+	export CONTROLLER_TOKEN_VALIDATION_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_TOKEN_VALIDATION_API_PATH}"
+
+	local val_status_code=`curl -is -X POST $CONTROLLER_TOKEN_VALIDATION_URL \
 		    -H 'Content-Type: application/json' \
 		    -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/" | awk '{print $2}'`
 	
@@ -50,7 +58,7 @@ validate_token()
 
 save_ztp_config()
 {
-	sed -i.bak -e "/^URI=/s/=.*/=https:\/\/$URI:$CONTROLLER_API_PORT\/wanpad\/api\/v1\/devices\/plug_play\//" \
+	sed -i.bak -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
 				-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
 }
 
