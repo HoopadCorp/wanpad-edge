@@ -10,6 +10,16 @@ WANPAD_USERNAME=	hoopad
 all:
 	@echo "Nothing to be done. Please use make install or make uninstall"
 
+.PHONY: litedeps
+litedeps:
+	@echo "Install lite version dependencies"
+	@if [ -e /etc/debian_version ]; then\
+		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git build-essential sudo git-lfs;\
+	elif [ "${OS}" = "FreeBSD" ]; then\
+		pkg install -y git python3 sudo;\
+	fi
+
+
 .PHONY: deps
 deps:
 	@echo "Install applications"
@@ -100,6 +110,29 @@ install: ca deps generate
 		echo "If you want the new configuration use the following command below:";\
 		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
 	fi
+
+.PHONY: liteinstall
+liteinstall: litedeps
+	@echo "Installing wanpad lite version"
+	@echo
+	@cp -Rv usr /
+	@chmod +x ${WANPAD_CMD}
+	@echo "Make it administration cli tool only"
+	@if [ "${OS}" = "FreeBSD" ]; then\
+		sed -i '' '1s/$$/\nexport LITE_VERSION=true/' /usr/local/share/wanpad/common.sh;\
+	else\
+		sed -i -e '1s/$$/\nexport LITE_VERSION=true/' /usr/local/share/wanpad/common.sh;\
+	fi
+	@echo
+	@echo "Installing wanpad configuration"
+	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
+		cp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf;\
+	else\
+		echo "wanpad configuration file is already exists at /usr/local/etc/wanpad/wanpad.conf.";\
+		echo "If you want the new configuration use the following command below:";\
+		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
+	fi
+
 
 .PHONY: debug
 debug:

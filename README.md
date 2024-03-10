@@ -92,7 +92,16 @@ After the prompt return, you should be able to access your device through the co
 wanpadctl <URL HERE> <TOKEN HERE>
 ```
 
-## 
+## Lite Version
+
+Lite version is only for administration purposes.
+
+### Lite Install
+
+```sh
+git clone https://github.com/HoopadCorp/wanpad-edge.git
+make liteinstall
+```
 
 # Contributions
 

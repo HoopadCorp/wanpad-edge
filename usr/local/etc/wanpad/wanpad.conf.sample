@@ -17,4 +17,5 @@ CONTROLLER_API_PORT=8001
 TOKEN=
 
 # OpenVPN Client
-OOB_CONFIG_FILE=/usr/local/etc/wanpad/client.ovpn
+# The ".ovpn" file must be located under /usr/local/etc/wanpad/ directory.
+OOB_CONFIG_FILE=client.ovpn

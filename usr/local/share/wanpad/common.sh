@@ -16,7 +16,20 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 . /usr/local/etc/wanpad/wanpad.conf
+
 . /usr/local/share/wanpad/lib/base-lib.sh
+. /usr/local/share/wanpad/lib/adm-lib.sh
+
+if [ -n "$LITE_VERSION" ]
+then
+    if [ "$1" != "adm" ]
+    then
+        echo "Error: Sub-commands other than 'adm' are not supported in the WANPAD Edge Lite version."
+    fi
+    echo "Lite version is administration only."
+    echo "Please install WANPAD Edge for full installation."
+    exit 1
+fi
+
 . /usr/local/share/wanpad/lib/install-lib.sh
 . /usr/local/share/wanpad/lib/ztp-lib.sh
-. /usr/local/share/wanpad/lib/adm-lib.sh
