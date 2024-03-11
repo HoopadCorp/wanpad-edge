@@ -34,7 +34,7 @@ EOF
 
 bgp_mesh_usage()
 {
-    echo -e "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]"
+    echo "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]\n"
 }
 
 get_device_group()

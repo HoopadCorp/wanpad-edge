@@ -56,5 +56,5 @@ if [ -f "${SCRIPTPATH}" ]; then
     : "${SH:=sh}"
     exec "${SH}" "${SCRIPTPATH}" "$@"
 else
-    error_exit "${SCRIPTPATH} not found."
+    print_error "${SCRIPTPATH} not found."
 fi

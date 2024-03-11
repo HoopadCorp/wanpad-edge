@@ -104,27 +104,25 @@ EOF
     exit 1
 }
 
-get_api()
+get_controller_url()
 {
-	local CONTROLLER_API_PATH="$1"
+  local CONTROLLER_API_PATH="$1"
 
 	# Run get scheme for CONTROLLER_SCHEME variable
 	get_scheme
 
-	local CONTROLLER_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
+	echo "${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
+}
 
+get_api()
+{
+	local CONTROLLER_URL="$(get_controller_url $1)"
 	curl -s -X GET $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -w "%{json}"
 }
 
 post_api()
 {
-	local CONTROLLER_API_PATH="$1"
   local data="$2"
-
-	# Run get scheme for CONTROLLER_SCHEME variable
-	get_scheme
-
-	local CONTROLLER_URL="${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
-
+	local CONTROLLER_URL="$(get_controller_url $1)"
 	curl -s -X POST $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -d "$data" -w "%{json}"
 }
