@@ -101,7 +101,7 @@ configure_snmpd()
 
 	if [ -z "$flag" ]
 	then
-		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" $wanpad_snmpd_config
+		cp "/usr/local/share/wanpad/${service}/${daemon}.conf" $wanpad_snmpd_config
 		service ${daemon} restart
 		set +x
 		echo "snmp is not yet configured by wanpad"
