@@ -95,10 +95,9 @@ configure_snmpd()
 	else
 		wanpad_snmpd_config="/etc/${service}/${daemon}.conf"
 	fi
-	local flag=`grep "${wanpad_conf_message}" $wanpad_snmpd_config`
+	local flag="$(grep "$wanpad_conf_message" $wanpad_snmpd_config)"
 
-
-	if [[ -z $flag ]]
+	if [[ -z "$flag" ]]
 	then
 		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" $wanpad_snmpd_config
 		service ${daemon} restart
