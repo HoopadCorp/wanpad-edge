@@ -74,7 +74,8 @@ configure_ssh()
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf >> /etc/ssh/sshd_config
 	else
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf > /etc/ssh/sshd_config.d/99-wanpad.conf
-		sed -i -e '1s/$$/\nDebianBanner no/' /etc/ssh/sshd_config.d/99-wanpad.conf
+		# Non-POSIX SED
+		sed -i -e '1{/^DebianBanner .*/!s/^/DebianBanner no\n/}' /etc/ssh/sshd_config.d/99-wanpad.conf
 	fi
 
 	echo "NOTICE:
