@@ -35,6 +35,13 @@ EOF
 bgp_mesh_usage()
 {
     echo "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]\n"
+	exit 1
+}
+
+set_token_usage()
+{
+    echo "Usage: wanpadctl adm set token [ token ]\n"
+	exit 1
 }
 
 get_device_group()
@@ -154,4 +161,14 @@ show_device_by_name()
 			exit 1
 			;;
 	esac
+}
+
+set_token()
+{
+	if [ "${OSKERNEL}" = "FreeBSD" ]
+	then
+		sed -i '.bak' "/^TOKEN=/s/=.*/=$1/" /usr/local/etc/wanpad/wanpad.conf
+	else
+		sed -i.bak -e "/^TOKEN=/s/=.*/=$1/" /usr/local/etc/wanpad/wanpad.conf
+	fi
 }

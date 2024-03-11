@@ -52,13 +52,14 @@ then
         if [ "$3" = "mesh" ]
         then
             shift 3
-            if [ $# -ne 2 ]
-            then
-                bgp_mesh_usage
-                exit 1
-            fi
+            [ $# -ne 2 ] && bgp_mesh_usage
             bgp_mesh_selected_device "$1" "$2"
         fi
+    elif [ "$2" = "token" ]
+    then
+        shift 2
+        [ $# -ne 1 ] && set_token_usage
+        set_token "$1"
     fi
 elif [ "$1" = "show" ]
 then

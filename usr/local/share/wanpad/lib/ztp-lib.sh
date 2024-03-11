@@ -49,8 +49,14 @@ validate_token()
 
 save_ztp_config()
 {
-	sed -i.bak -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
-				-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	if [ "${OSKERNEL}" = "FreeBSD" ]
+	then
+		sed -i '.bak' -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
+					-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	else
+		sed -i.bak -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
+					-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	fi
 }
 
 run_ztp_py()
