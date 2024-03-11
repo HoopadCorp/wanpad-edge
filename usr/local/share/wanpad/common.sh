@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+set -a
 . /usr/local/etc/wanpad/wanpad.conf
+set +a
 
 # Base library should be first to call
 . /usr/local/share/wanpad/lib/base-lib.sh

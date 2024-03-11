@@ -133,6 +133,21 @@ liteinstall: litedeps
 		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
 	fi
 
+.PHONY: installonly
+installonly:
+	@echo "Installing wanpad version"
+	@echo
+	@cp -Rv usr /
+	@chmod +x ${WANPAD_CMD}
+	@echo
+	@echo "Installing wanpad configuration"
+	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
+		cp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf;\
+	else\
+		echo "wanpad configuration file is already exists at /usr/local/etc/wanpad/wanpad.conf.";\
+		echo "If you want the new configuration use the following command below:";\
+		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
+	fi
 
 .PHONY: debug
 debug:

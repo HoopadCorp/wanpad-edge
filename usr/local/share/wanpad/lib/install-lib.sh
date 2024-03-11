@@ -68,17 +68,17 @@ configure_fprobe()
 
 configure_ssh()
 {
-	if [ $OSKERNEL = "FreeBSD" ]; then
+	if [ "$OSKERNEL" = "FreeBSD" ]
+	then
 		sed -i '' -e '/.*Port */d' /etc/ssh/sshd_config
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf >> /etc/ssh/sshd_config
 	else
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf > /etc/ssh/sshd_config.d/99-wanpad.conf
-		echo "DebianBanner no" >> /etc/ssh/sshd_config.d/99-wanpad.conf
+		sed -i -e '1s/$$/\nDebianBanner no/' /etc/ssh/sshd_config.d/99-wanpad.conf
 	fi
-	set +x ;
-	echo "\nNOTICE:
+
+	echo "NOTICE:
 	The SSH port will be changed to $DEFAULT_SSH_PORT.\n"
-	set -x;
 	service sshd restart
 }
 
@@ -90,7 +90,8 @@ configure_snmpd()
 	local wanpad_conf_message="# Configured By WANPAD"
 	local service='snmp'
 	local daemon='snmpd'
-	if [ $OSKERNEL = "FreeBSD" ]; then
+	if [ "$OSKERNEL" = "FreeBSD" ]
+	then
 		wanpad_snmpd_config="/etc/${daemon}.config"
 	else
 		wanpad_snmpd_config="/etc/${service}/${daemon}.conf"
