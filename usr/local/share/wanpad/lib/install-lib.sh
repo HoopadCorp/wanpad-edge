@@ -120,33 +120,33 @@ disable_stop_systemd_resolved()
 # nameservers by simply editing /etc/resolv.conf .
 save_current_nameserver_conf_and_disable_resolved()
 {	
-	current_etc_resolv_conf=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+	current_etc_resolv_conf="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}')"
  	if [ -n "$(netplan get)" ]; then
-		netplan_conf_file=`ls /etc/netplan/*.y*ml | head -1`
-		if [[ $current_etc_resolv_conf == "127.0.0.53" ]]
+		netplan_conf_file="$(ls /etc/netplan/*.y*ml | head -1)"
+		if [[ "$current_etc_resolv_conf" == "127.0.0.53" ]]
 		then 
-			nameserver1_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1 `
-			nameserver2_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1`
+			nameserver1_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1)"
+			nameserver2_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1)"
 			
-			if [[ -n $nameserver1_temp ]]
+			if [[ -n "$nameserver1_temp" ]]
 			then
-				DEFAULT_NS1=`echo $nameserver1_temp`
-				if [[ -n $nameserver1_temp ]]
+				DEFAULT_NS1="$(echo "$nameserver1_temp")"
+				if [[ -n "$nameserver1_temp" ]]
 				then 
-					DEFAULT_NS2=`echo $nameserver2_temp`
+					DEFAULT_NS2="$(echo $nameserver2_temp)"
 				fi
 			fi
 		else
-			if [[ -n $current_etc_resolv_conf ]]
+			if [[ -n "$current_etc_resolv_conf" ]]
 			then
-				nameserver1_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1 `
-				nameserver2_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1`
-				if [[ -n $nameserver1_temp ]]
+				nameserver1_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1)"
+				nameserver2_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1)"
+				if [[ -n "$nameserver1_temp" ]]
 				then
-					DEFAULT_NS1=`echo $nameserver1_temp`
-					if [[ -n $nameserver1_temp ]]
+					DEFAULT_NS1="$(echo $nameserver1_temp)"
+					if [[ -n "$nameserver1_temp" ]]
 					then 
-						DEFAULT_NS2=`echo $nameserver2_temp`
+						DEFAULT_NS2="$(echo $nameserver2_temp)"
 					fi
 				fi
 			fi
@@ -156,14 +156,13 @@ save_current_nameserver_conf_and_disable_resolved()
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
 	disable_stop_systemd_resolved
-	echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
-	echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
 
-	set +x
+	[ -n "$DEFAULT_NS1" ] && echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
+	[ -n "$DEFAULT_NS2" ] && echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
+
 	echo "PLEASE NOTE:
 	The following servers are set as your DNS servers.
-	you can change this configuration by editing /etc/resolv.conf
-	
-	"
-	set -x
+	you can change this configuration by editing /etc/resolv.conf\n"
+
+	cat /etc/resolv.conf
 }
