@@ -26,7 +26,7 @@ if [ "$OSKERNEL" = "Linux" ]; then
 fi
 start_wanpad_services
 enable_ipv4_forward
-set_fib_multipath_hash_policy_1
+set_fib_multipath_hash_policy
 set_fib_ip_no_pmtu_disc_1
 configure_fprobe
 configure_ssh

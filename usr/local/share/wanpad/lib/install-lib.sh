@@ -27,8 +27,8 @@ enable_wanpad_systemd_services()
 	find /etc/systemd/ -lname "/usr/local/share/wanpad/client-services/wanpad-*.service" -exec rm {} +
 	# remove any wanpad_os service existing on the host
 	systemctl daemon-reload
-	for i in `ls /usr/local/share/wanpad/client-services/wanpad-*.service  | xargs`
-		do systemctl enable $i || true
+	for service in "$(ls /usr/local/share/wanpad/client-services/wanpad-*.service  | xargs)"
+		do systemctl enable $service || true
 	done
 }
 
@@ -39,19 +39,19 @@ start_wanpad_services()
 
 enable_ipv4_forward()
 {
-	echo "net.ipv4.ip_forward=1" | tee /etc/sysctl.d/10-ip_forward.conf
+	echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/10-ip_forward.conf
 	sysctl -w net.ipv4.ip_forward=1
 }
 
-set_fib_multipath_hash_policy_1()
+set_fib_multipath_hash_policy()
 {	
-	echo 'net.ipv4.fib_multipath_hash_policy=1' | tee /etc/sysctl.d/10-fib_multipath_hash_policy.conf
+	echo 'net.ipv4.fib_multipath_hash_policy=1' > /etc/sysctl.d/10-fib_multipath_hash_policy.conf
 	sysctl -w net.ipv4.fib_multipath_hash_policy=1
 }
 
 set_fib_ip_no_pmtu_disc_1()
 {
-	echo 'net.ipv4.ip_no_pmtu_disc = 1' | tee /etc/sysctl.d/10-ip-no-pmtu-disc.conf
+	echo 'net.ipv4.ip_no_pmtu_disc=1' > /etc/sysctl.d/10-ip-no-pmtu-disc.conf
 	sysctl -w net.ipv4.ip_no_pmtu_disc=1
 }
 
@@ -111,11 +111,6 @@ configure_snmpd()
 	fi
 }
 
-disable_stop_systemd_resolved()
-{
-	systemctl disable --now systemd-resolved
-}
-
 # This function enables controller to be able to change the
 # nameservers by simply editing /etc/resolv.conf .
 save_current_nameserver_conf_and_disable_resolved()
@@ -155,7 +150,8 @@ save_current_nameserver_conf_and_disable_resolved()
 	
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
-	disable_stop_systemd_resolved
+
+	[ "$OSKERNEL" == "Linux" ] && systemctl disable --now systemd-resolved
 
 	[ -n "$DEFAULT_NS1" ] && echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
 	[ -n "$DEFAULT_NS2" ] && echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
