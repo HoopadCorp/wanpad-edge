@@ -28,10 +28,10 @@ Please Provide the following information:
 
 validate_token()
 {
-	local response_json="$(get_api /wanpad/api/v1/auth/validate_token/)"
+	local data="$(echo '{}' | jq -c --arg token $1 '.token=$token')"
 
-    local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
-	
+	local val_status_code="$(post_api /wanpad/api/v1/auth/validate_token/ "$data" | jq -s '.[].http_code')"
+
 	case $val_status_code in
 		200)
 			echo Great! your token is valid.
@@ -58,5 +58,6 @@ run_ztp_py()
 	set -a
 	. /usr/local/etc/wanpad/wanpad.conf
 	set +a
+	export CONTROLLER_TOKEN_VALIDATION_URL="$(get_controller_url /wanpad/api/v1/auth/validate_token/)"
 	python3 /usr/local/share/wanpad/ztp/pnp-client.py
 }

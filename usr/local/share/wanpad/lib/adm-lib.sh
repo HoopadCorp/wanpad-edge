@@ -34,12 +34,12 @@ EOF
 
 bgp_mesh_usage()
 {
-    echo -e "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]"
+    echo "Usage: wanpadctl adm set bgp mesh [ local-as ] [ devices ]\n"
 }
 
 get_device_group()
 {
-	local response_json="$(get_api /wanpad/api/v1/devices/devices-group/)"
+	local response_json="$(get_api /wanpad/api/v1/devices/group/)"
 
     local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
 
@@ -85,7 +85,7 @@ bgp_mesh_selected_device()
     shift
     local data="$(echo $@ | jq -R "split(\",\")|{devices:[.[]], local_as: \"$LOCAL_AS\"}")"
 
-	local response_json="$(post_api /wanpad/api/v1/bgp/multi/bgp/neighbors/selected_devices/ $data)"
+	local response_json="$(post_api /wanpad/api/v1/bgp/mesh/neighbors/selected_devices/ $data)"
 
     local val_status_code=$(echo $response_json | jq -s '.[1].http_code' )
 

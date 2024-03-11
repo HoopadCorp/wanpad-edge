@@ -18,9 +18,7 @@
 . /usr/local/etc/wanpad/wanpad.conf
 . /usr/local/share/wanpad/common.sh
 
-set +x
 force_run_as_root
-set -x
 
 configure_birdwatcher
 if [ "$OSKERNEL" = "Linux" ]; then
