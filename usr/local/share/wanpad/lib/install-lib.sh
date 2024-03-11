@@ -97,7 +97,7 @@ configure_snmpd()
 	fi
 	local flag="$(grep "$wanpad_conf_message" $wanpad_snmpd_config)"
 
-	if [[ -z "$flag" ]]
+	if [ -z "$flag" ]
 	then
 		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" $wanpad_snmpd_config
 		service ${daemon} restart
@@ -118,28 +118,28 @@ save_current_nameserver_conf_and_disable_resolved()
 	current_etc_resolv_conf="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}')"
  	if [ -n "$(netplan get)" ]; then
 		netplan_conf_file="$(ls /etc/netplan/*.y*ml | head -1)"
-		if [[ "$current_etc_resolv_conf" == "127.0.0.53" ]]
+		if [ "$current_etc_resolv_conf" = "127.0.0.53" ]
 		then 
 			nameserver1_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1)"
 			nameserver2_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1)"
 			
-			if [[ -n "$nameserver1_temp" ]]
+			if [ -n "$nameserver1_temp" ]
 			then
 				DEFAULT_NS1="$(echo "$nameserver1_temp")"
-				if [[ -n "$nameserver1_temp" ]]
+				if [ -n "$nameserver1_temp" ]
 				then 
 					DEFAULT_NS2="$(echo $nameserver2_temp)"
 				fi
 			fi
 		else
-			if [[ -n "$current_etc_resolv_conf" ]]
+			if [ -n "$current_etc_resolv_conf" ]
 			then
 				nameserver1_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1)"
 				nameserver2_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1)"
-				if [[ -n "$nameserver1_temp" ]]
+				if [ -n "$nameserver1_temp" ]
 				then
 					DEFAULT_NS1="$(echo $nameserver1_temp)"
-					if [[ -n "$nameserver1_temp" ]]
+					if [ -n "$nameserver1_temp" ]
 					then 
 						DEFAULT_NS2="$(echo $nameserver2_temp)"
 					fi
@@ -151,7 +151,7 @@ save_current_nameserver_conf_and_disable_resolved()
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
 
-	[ "$OSKERNEL" == "Linux" ] && systemctl disable --now systemd-resolved
+	[ "$OSKERNEL" = "Linux" ] && systemctl disable --now systemd-resolved
 
 	[ -n "$DEFAULT_NS1" ] && echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
 	[ -n "$DEFAULT_NS2" ] && echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
