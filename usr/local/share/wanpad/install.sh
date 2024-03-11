@@ -29,6 +29,6 @@ enable_ipv4_forward
 set_fib_multipath_hash_policy_1
 set_fib_ip_no_pmtu_disc_1
 configure_fprobe
-set_ssh_default_port
+configure_ssh
 configure_snmpd
 save_current_nameserver_conf_and_disable_resolved
