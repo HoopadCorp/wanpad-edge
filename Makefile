@@ -25,7 +25,7 @@ deps:
 	@echo "Install applications"
 	@if [ -e /etc/debian_version ]; then\
 		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential\
-		 python3-dev strongswan strongswan-starter frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs jq;\
+		 python3-dev strongswan strongswan-starter strongswan-swanctl ocserv frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs jq;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
 		pkg install -y git openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go jq;\
 	fi
