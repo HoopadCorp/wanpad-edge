@@ -66,6 +66,15 @@ configure_fprobe()
 	done
 }
 
+configure_prometheus_smokeping_prober()
+{
+	if [ "$OSKERNEL" = "Linux" ]
+	then
+		echo 'ARGS="--privileged"' > /etc/default/prometheus-smokeping-prober
+		service prometheus-smokeping-prober restart
+	fi
+}
+
 configure_ssh()
 {
 	if [ "$OSKERNEL" = "FreeBSD" ]
