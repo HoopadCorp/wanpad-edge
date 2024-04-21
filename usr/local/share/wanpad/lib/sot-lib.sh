@@ -37,10 +37,13 @@ EOF
 
 smokeping_compare_and_update()
 {
-	diff -q /etc/prometheus/smokeping_prober.yml.sot /etc/prometheus/smokeping_prober.yml
-	if [ "$?" != 0 ]
+	if [ -s /etc/prometheus/smokeping_prober.yml.sot ]
 	then
-		cp /etc/prometheus/smokeping_prober.yml.sot /etc/prometheus/smokeping_prober.yml
-		service prometheus-smokeping-prober restart
+		diff -q /etc/prometheus/smokeping_prober.yml.sot /etc/prometheus/smokeping_prober.yml
+		if [ "$?" != 0 ]
+		then
+			cp /etc/prometheus/smokeping_prober.yml.sot /etc/prometheus/smokeping_prober.yml
+			service prometheus-smokeping-prober restart
+		fi
 	fi
 }
