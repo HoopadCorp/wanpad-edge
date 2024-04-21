@@ -73,4 +73,6 @@ then
             show_device_by_name "$4"
         fi
     fi
+else
+    adm_usage
 fi

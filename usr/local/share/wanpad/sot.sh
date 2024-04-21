@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2023-2024, Seyed Pouria Mousavizadeh Tehrani <p.mousavizadeh@protonmail.com>
+# Copyright (c) 2024, Seyed Pouria Mousavizadeh Tehrani <p.mousavizadeh@protonmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -15,14 +15,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-set -a
-. /usr/local/etc/wanpad/wanpad.conf
-set +a
+. /usr/local/share/wanpad/common.sh
 
-# Base library should be first to call
-. /usr/local/share/wanpad/lib/base-lib.sh
+# Handle special-case commands first.
+case "$1" in
+help|-h|--help)
+    sot_usage
+    ;;
+esac
 
-. /usr/local/share/wanpad/lib/adm-lib.sh
-. /usr/local/share/wanpad/lib/install-lib.sh
-. /usr/local/share/wanpad/lib/ztp-lib.sh
-. /usr/local/share/wanpad/lib/sot-lib.sh
+if [ "$1" = "update" ]
+then
+    if [ "$2" = "smokeping" ]
+    then
+        smokeping_compare_and_update
+    fi
+else
+    sot_usage
+fi

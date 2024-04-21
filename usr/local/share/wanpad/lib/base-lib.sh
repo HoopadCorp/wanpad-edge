@@ -96,6 +96,8 @@ Available Commands:
   init      join to WANPAD controller.
   oob       connect to WANPAD controller using oob network.
   lte       configure lte module. (if any exists.)
+  sot       client-side operations of source of truth. check wanpadctl(8) for more details.
+  adm       administration tools of controller via admin api. check wanpadctl(8) for more details.
 
 Use "wanpad -v|--version" for version information.
 Use "wanpad command -h|--help" for more information about a command.
