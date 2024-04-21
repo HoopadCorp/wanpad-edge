@@ -27,7 +27,7 @@ deps:
 		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential\
 		 python3-dev strongswan strongswan-starter strongswan-swanctl ocserv frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs jq;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
-		pkg install -y git openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go jq;\
+		pkg install -y git-lite openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go jq gcc49;\
 	fi
 	@echo
 	@echo "Install python applications"
@@ -41,6 +41,17 @@ deps:
 		mv /tmp/node_exporter-*/node_exporter /usr/local/bin/;\
 		rm -rf /tmp/node_exporter*;\
 	fi
+	@echo
+	@echo "Install UDPSpeeder (FEC)"
+	@echo
+	@git clone https://github.com/wangyu-/UDPspeeder.git /tmp/UDPspeeder
+	@cd /tmp/UDPspeeder
+	@if [ -e /etc/debian_version ]; then\
+		make;\
+	elif [ "${OS}" = "FreeBSD" ]; then\
+		make freebsd;\
+	fi
+	@cd -
 	@echo
 	@echo "Install birdwatcher"
 	@echo
