@@ -21,13 +21,14 @@ sot_usage()
 {
     cat << EOF
 Usage:
-  wanpadctl sot COMMAND [args]
+  wanpadctl sot OPERATION COMMAND [args]
 
-COMMAND
-    client-side operations of source of truth.
+OPERATION
+    Specifies the action to perform on the object.  The set of possible actions depends on the object type.  As a rule, it is possible to add, update, delete and show (or list ) objects, but some objects
+    do not allow all of these operations or have some additional commands. The help command is available for all objects.
 
 Available Commands:
-	smokeping		compare desired and current config file of smokeping probe to update the file and restart the service.
+	smokeping		compare desired and current config file of smokeping probe to update the file and restart the service. (update operation only)
 
 Use "wanpad -v|--version" for version information.
 EOF
