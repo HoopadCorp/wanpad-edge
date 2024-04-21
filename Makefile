@@ -51,9 +51,9 @@ deps:
 		elif [ "${OS}" = "FreeBSD" ]; then\
 			ln -s /usr/local/bin/g++49 /usr/local/bin/g++;\
 			make -C /tmp/UDPspeeder freebsd;\
-		fi
-		cp /tmp/UDPspeeder/speederv2 /usr/local/bin/
-		rm -rf /tmp/UDPspeeder
+		fi;\
+		cp /tmp/UDPspeeder/speederv2 /usr/local/bin/;\
+		rm -rf /tmp/UDPspeeder;\
 	fi
 	@echo
 	@echo "Install birdwatcher"
