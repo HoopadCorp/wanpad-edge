@@ -49,6 +49,7 @@ deps:
 	@if [ -e /etc/debian_version ]; then\
 		make;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
+		ln -s /usr/local/bin/g++49 /usr/local/bin/g++;\
 		make freebsd;\
 	fi
 	@cd -
