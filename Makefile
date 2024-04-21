@@ -45,14 +45,14 @@ deps:
 	@echo "Install UDPSpeeder (FEC)"
 	@echo
 	@git clone https://github.com/wangyu-/UDPspeeder.git /tmp/UDPspeeder
-	@cd /tmp/UDPspeeder
 	@if [ -e /etc/debian_version ]; then\
-		make;\
+		make -C /tmp/UDPspeeder;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
 		ln -s /usr/local/bin/g++49 /usr/local/bin/g++;\
-		make freebsd;\
+		make -C /tmp/UDPspeeder freebsd;\
 	fi
-	@cd -
+	@cp /tmp/UDPspeeder/speederv2 /usr/local/bin/
+	@rm -rf /tmp/UDPspeeder
 	@echo
 	@echo "Install birdwatcher"
 	@echo
