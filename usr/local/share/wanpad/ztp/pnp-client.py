@@ -45,7 +45,7 @@ def client_program():
                 "hostname": socket.gethostname(),
                 "token": os.environ['TOKEN'],
                 "dsf": dsf}
-        url = os.environ['CONTROLLER_TOKEN_VALIDATION_URL']
+        url = os.environ['CONTROLLER_TOKEN_URL']
         request_to_url = requests.post(url, verify=False, data=data, timeout=6)
         if request_to_url.status_code == 400:
             print(request_to_url.text)
