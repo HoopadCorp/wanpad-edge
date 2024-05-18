@@ -45,8 +45,17 @@ Login as `root`.
 
 > NOTE 2: The SSH service will be running on port 24489 after running this script!
 
+1.Install Git LFS if it is not already installed.
+
+```sh
+apt-get install git-lfs
+git-lfs install
+```
+2.Clone and install wanpadctl
+
 ```sh
 git clone https://github.com/HoopadCorp/wanpad-edge.git
+cd wanpad-edge
 git lfs pull
 make install
 wanpadctl install
