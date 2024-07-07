@@ -38,7 +38,7 @@ start_wanpad_services()
 	then 
 		systemctl start wanpad-*.service --all || true
 	else	
-		service wanpad-* start|| true
+		service wanpad-* start || true
 	fi	
 }
 
