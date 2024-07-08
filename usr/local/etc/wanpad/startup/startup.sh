@@ -15,3 +15,5 @@ DIR="/usr/local/etc/wanpad/startup"
 . ${DIR}/startup-7.sh
 . ${DIR}/startup-8.sh
 . ${DIR}/startup-9.sh
+
+. ${DIR}/swanctl.sh
