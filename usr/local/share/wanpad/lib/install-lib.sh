@@ -34,7 +34,12 @@ enable_wanpad_systemd_services()
 
 start_wanpad_services()
 {
-	service wanpad-* start || true
+	if [ "$OSKERNEL" = "Linux" ]
+	then 
+		systemctl start wanpad-*.service --all || true
+	else	
+		service wanpad-* start || true
+	fi	
 }
 
 enable_ipv4_forward()

@@ -89,7 +89,7 @@ After the prompt return, you should be able to access your device through the co
 - **NOTE:** You can also run the script in **non-interactive** mode, doing:
 
 ```sh
-wanpadctl <DOMAIN HERE> <TOKEN HERE>
+wanpadctl init <DOMAIN HERE> <TOKEN HERE>
 ```
 
 ## Contributions

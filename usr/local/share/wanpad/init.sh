@@ -28,7 +28,7 @@ case "$NA" in
 		ztp_dialogue
 		;;
 	2)
-		DOMAIN=$1
+		CONTROLLER_DOMAIN=$1
 		TOKEN=$2
 		;;
 	*)
