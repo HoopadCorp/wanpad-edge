@@ -101,7 +101,7 @@ install: ca deps generate
 	@echo
 	@cp -Rv usr /
 	@echo
-	@echo "Set ownership of wanpad configuration directory to ${WANPAD_USERNAME} and ${WANPAD_GROUP}""
+	@echo "Set ownership of wanpad configuration directory to ${WANPAD_USERNAME} and ${WANPAD_GROUP}"
 	@echo
 	@chown ${WANPAD_USERNAME}:${WANPAD_GROUP} -R /usr/local/etc/wanpad
 	@chmod +x ${WANPAD_CMD}
