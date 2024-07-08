@@ -5,6 +5,7 @@ DEBUG=				$$(if [ "${OS}" = "FreeBSD" ]; then echo set -xeouv pipefail; else ech
 WANPAD_VERSION=		$$(git rev-parse HEAD)
 WANPAD_CMD=			/usr/local/bin/wanpadctl
 WANPAD_USERNAME=	hoopad
+WANPAD_GROUP=	hoopad
 
 .PHONY: all
 all:
@@ -99,6 +100,10 @@ install: ca deps generate
 	@echo "Installing wanpad"
 	@echo
 	@cp -Rv usr /
+	@echo
+	@echo "Set ownership of wanpad configuration directory to ${WANPAD_USERNAME} and ${WANPAD_GROUP}
+	@echo
+	@chown ${WANPAD_USERNAME}:${WANPAD_GROUP} -R /usr/local/etc/wanpad
 	@chmod +x ${WANPAD_CMD}
 	@echo
 	@echo "Install filebeat"
