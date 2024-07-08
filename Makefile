@@ -114,7 +114,7 @@ install: ca deps generate
 	@if [ "${OS}" = "GNU/Linux" ]; then\
 		echo "Configure apparmor (Linux)";\
 		cp /usr/local/share/wanpad/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/local/usr.sbin.swanctl;\
-		aa-status --enabled && apparmor_parser -r /etc/apparmor.d/local/usr.sbin.swanctl;\
+		aa-status --enabled && apparmor_parser -r /etc/apparmor.d/usr.sbin.swanctl;\
 	fi
 	@echo "Installing wanpad configuration"
 	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
