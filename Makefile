@@ -111,6 +111,11 @@ install: ca deps generate
 	@tar xzvf usr/local/share/wanpad/tar-files/filebeat.tar.gz -C /usr/local/share/wanpad/client-services/
 	@ln -sf /usr/local/share/wanpad/client-services/filebeat/filebeat /usr/local/bin/
 	@echo
+	@if [ "${OS}" = "GNU/Linux" ]; then\
+		echo "Configure apparmor (Linux)";\
+		cp /usr/local/share/wanpad/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/local/usr.sbin.swanctl;\
+		aa-status --enabled && apparmor_parser -r /etc/apparmor.d/local/usr.sbin.swanctl;\
+	fi
 	@echo "Installing wanpad configuration"
 	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
 		cp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf;\
