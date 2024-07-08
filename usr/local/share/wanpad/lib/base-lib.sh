@@ -105,16 +105,6 @@ EOF
     exit 1
 }
 
-get_controller_url()
-{
-  local CONTROLLER_API_PATH="$1"
-
-	# Run get scheme for CONTROLLER_SCHEME variable
-	get_scheme
-
-	echo "${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}${CONTROLLER_API_PATH}"
-}
-
 get_api()
 {
 	local CONTROLLER_URL="$(get_controller_url $1)"

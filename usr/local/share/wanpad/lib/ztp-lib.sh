@@ -64,6 +64,11 @@ run_ztp_py()
 	set -a
 	. /usr/local/etc/wanpad/wanpad.conf
 	set +a
-	export CONTROLLER_TOKEN_URL="$(get_controller_url /wanpad/api/v1/devices/plug_play/)"
+	get_scheme
+	export CONTROLLER_SCHEME
+	export CONTROLLER_DOMAIN
+	export CONTROLLER_API_PORT
+	export CONTROLLER_API_PATH
+
 	python3 /usr/local/share/wanpad/ztp/pnp-client.py
 }

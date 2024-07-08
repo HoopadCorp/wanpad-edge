@@ -24,3 +24,6 @@ SSL=true
 # OpenVPN Client
 # The ".ovpn" file must be located under /usr/local/etc/wanpad/ directory.
 OOB_CONFIG_FILE=client.ovpn
+
+# Advanced
+CONTROLLER_API_PATH=/wanpad/api/v1/devices/plug_play/

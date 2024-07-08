@@ -45,7 +45,14 @@ def client_program():
                 "hostname": socket.gethostname(),
                 "token": os.environ['TOKEN'],
                 "dsf": dsf}
-        url = os.environ['CONTROLLER_TOKEN_URL']
+
+        if os.environ['SSL'] == "false":
+            http_scheme = "http"
+        else:
+            http_scheme = "https"
+
+        url = f"{http_scheme}://{os.environ['CONTROLLER_DOMAIN']}:{os.environ['CONTROLLER_API_PORT']}{os.environ['CONTROLLER_API_PATH']}"
+
         request_to_url = requests.post(url, verify=False, data=data, timeout=6)
         if request_to_url.status_code == 400:
             print(request_to_url.text)
