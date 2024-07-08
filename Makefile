@@ -10,16 +10,6 @@ WANPAD_USERNAME=	hoopad
 all:
 	@echo "Nothing to be done. Please use make install or make uninstall"
 
-.PHONY: litedeps
-litedeps:
-	@echo "Install lite version dependencies"
-	@if [ -e /etc/debian_version ]; then\
-		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git build-essential sudo git-lfs jq;\
-	elif [ "${OS}" = "FreeBSD" ]; then\
-		pkg install -y git python3 sudo jq;\
-	fi
-
-
 .PHONY: deps
 deps:
 	@echo "Install applications"
@@ -115,28 +105,6 @@ install: ca deps generate
 	@echo
 	@tar xzvf usr/local/share/wanpad/tar-files/filebeat.tar.gz -C /usr/local/share/wanpad/client-services/
 	@ln -sf /usr/local/share/wanpad/client-services/filebeat/filebeat /usr/local/bin/
-	@echo
-	@echo "Installing wanpad configuration"
-	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
-		cp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf;\
-	else\
-		echo "wanpad configuration file is already exists at /usr/local/etc/wanpad/wanpad.conf.";\
-		echo "If you want the new configuration use the following command below:";\
-		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
-	fi
-
-.PHONY: liteinstall
-liteinstall: litedeps
-	@echo "Installing wanpad lite version"
-	@echo
-	@cp -Rv usr /
-	@chmod +x ${WANPAD_CMD}
-	@echo "Make it administration cli tool only"
-	@if [ "${OS}" = "FreeBSD" ]; then\
-		sed -i '' '1s/$$/\nLITE_VERSION=true/' ${WANPAD_CMD};\
-	else\
-		sed -i -e '1s/$$/\nLITE_VERSION=true/' ${WANPAD_CMD};\
-	fi
 	@echo
 	@echo "Installing wanpad configuration"
 	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\

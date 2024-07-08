@@ -26,17 +26,6 @@ WANPAD_VERSION="3.0.0"
 export CMD=$1
 shift
 
-if [ -n "$LITE_VERSION" ]
-then
-    if [ "$CMD" != "adm" ]
-    then
-        echo "Error: Sub-commands other than 'adm' are not supported in the WANPAD Edge Lite version."
-        echo "Lite version is administration only."
-        echo "Please install WANPAD Edge for full installation."
-        exit 1
-    fi
-fi
-
 # Handle special-case commands first.
 case "${CMD}" in
 version|-v|--version)

@@ -22,7 +22,6 @@ set +a
 # Base library should be first to call
 . /usr/local/share/wanpad/lib/base-lib.sh
 
-. /usr/local/share/wanpad/lib/adm-lib.sh
 . /usr/local/share/wanpad/lib/install-lib.sh
 . /usr/local/share/wanpad/lib/ztp-lib.sh
 . /usr/local/share/wanpad/lib/sot-lib.sh
