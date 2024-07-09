@@ -28,7 +28,7 @@ case "$NA" in
 		ztp_dialogue
 		;;
 	2)
-		URI=$1
+		CONTROLLER_DOMAIN=$1
 		TOKEN=$2
 		;;
 	*)
@@ -37,6 +37,6 @@ case "$NA" in
 		;;
 esac
 
-validate_token
 save_ztp_config
+validate_token $2
 run_ztp_py

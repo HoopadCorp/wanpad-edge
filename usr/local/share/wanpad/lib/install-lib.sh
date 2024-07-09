@@ -27,31 +27,36 @@ enable_wanpad_systemd_services()
 	find /etc/systemd/ -lname "/usr/local/share/wanpad/client-services/wanpad-*.service" -exec rm {} +
 	# remove any wanpad_os service existing on the host
 	systemctl daemon-reload
-	for i in `ls /usr/local/share/wanpad/client-services/wanpad-*.service  | xargs`
-		do systemctl enable $i || true
+	for service in "$(ls /usr/local/share/wanpad/client-services/wanpad-*.service  | xargs)"
+		do systemctl enable $service || true
 	done
 }
 
 start_wanpad_services()
 {
-	service wanpad-* start || true
+	if [ "$OSKERNEL" = "Linux" ]
+	then 
+		systemctl start wanpad-*.service --all || true
+	else	
+		service wanpad-* start || true
+	fi	
 }
 
 enable_ipv4_forward()
 {
-	echo "net.ipv4.ip_forward=1" | tee /etc/sysctl.d/10-ip_forward.conf
+	echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/10-ip_forward.conf
 	sysctl -w net.ipv4.ip_forward=1
 }
 
-set_fib_multipath_hash_policy_1()
+set_fib_multipath_hash_policy()
 {	
-	echo 'net.ipv4.fib_multipath_hash_policy=1' | tee /etc/sysctl.d/10-fib_multipath_hash_policy.conf
+	echo 'net.ipv4.fib_multipath_hash_policy=1' > /etc/sysctl.d/10-fib_multipath_hash_policy.conf
 	sysctl -w net.ipv4.fib_multipath_hash_policy=1
 }
 
 set_fib_ip_no_pmtu_disc_1()
 {
-	echo 'net.ipv4.ip_no_pmtu_disc = 1' | tee /etc/sysctl.d/10-ip-no-pmtu-disc.conf
+	echo 'net.ipv4.ip_no_pmtu_disc=1' > /etc/sysctl.d/10-ip-no-pmtu-disc.conf
 	sysctl -w net.ipv4.ip_no_pmtu_disc=1
 }
 
@@ -66,19 +71,29 @@ configure_fprobe()
 	done
 }
 
+configure_prometheus_smokeping_prober()
+{
+	if [ "$OSKERNEL" = "Linux" ]
+	then
+		echo 'ARGS="--privileged"' > /etc/default/prometheus-smokeping-prober
+		service prometheus-smokeping-prober restart
+	fi
+}
+
 configure_ssh()
 {
-	if [ $OSKERNEL = "FreeBSD" ]; then
+	if [ "$OSKERNEL" = "FreeBSD" ]
+	then
 		sed -i '' -e '/.*Port */d' /etc/ssh/sshd_config
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf >> /etc/ssh/sshd_config
 	else
 		envsubst < /usr/local/share/wanpad/ssh/99-wanpad.conf > /etc/ssh/sshd_config.d/99-wanpad.conf
-		echo "DebianBanner no" >> /etc/ssh/sshd_config.d/99-wanpad.conf
+		# Non-POSIX SED
+		sed -i -e '1{/^DebianBanner .*/!s/^/DebianBanner no\n/}' /etc/ssh/sshd_config.d/99-wanpad.conf
 	fi
-	set +x ;
-	echo "\nNOTICE:
+
+	echo "NOTICE:
 	The SSH port will be changed to $DEFAULT_SSH_PORT.\n"
-	set -x;
 	service sshd restart
 }
 
@@ -90,17 +105,17 @@ configure_snmpd()
 	local wanpad_conf_message="# Configured By WANPAD"
 	local service='snmp'
 	local daemon='snmpd'
-	if [ $OSKERNEL = "FreeBSD" ]; then
+	if [ "$OSKERNEL" = "FreeBSD" ]
+	then
 		wanpad_snmpd_config="/etc/${daemon}.config"
 	else
 		wanpad_snmpd_config="/etc/${service}/${daemon}.conf"
 	fi
-	local flag=`grep "${wanpad_conf_message}" $wanpad_snmpd_config`
+	local flag="$(grep "$wanpad_conf_message" $wanpad_snmpd_config)"
 
-
-	if [[ -z $flag ]]
+	if [ -z "$flag" ]
 	then
-		cp "${CLIENT_SERVICES_DIR}/${service}/${daemon}.conf" $wanpad_snmpd_config
+		cp "/usr/local/share/wanpad/${service}/${daemon}.conf" $wanpad_snmpd_config
 		service ${daemon} restart
 		set +x
 		echo "snmp is not yet configured by wanpad"
@@ -112,42 +127,37 @@ configure_snmpd()
 	fi
 }
 
-disable_stop_systemd_resolved()
-{
-	systemctl disable --now systemd-resolved
-}
-
 # This function enables controller to be able to change the
 # nameservers by simply editing /etc/resolv.conf .
 save_current_nameserver_conf_and_disable_resolved()
 {	
-	current_etc_resolv_conf=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`
+	current_etc_resolv_conf="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}')"
  	if [ -n "$(netplan get)" ]; then
-		netplan_conf_file=`ls /etc/netplan/*.y*ml | head -1`
-		if [[ $current_etc_resolv_conf == "127.0.0.53" ]]
+		netplan_conf_file="$(ls /etc/netplan/*.y*ml | head -1)"
+		if [ "$current_etc_resolv_conf" = "127.0.0.53" ]
 		then 
-			nameserver1_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1 `
-			nameserver2_temp=`cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1`
+			nameserver1_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -1)"
+			nameserver2_temp="$(cat ${netplan_conf_file} | yq -e '.network.*.*.nameservers.addresses[]' | head -2 | tail -1)"
 			
-			if [[ -n $nameserver1_temp ]]
+			if [ -n "$nameserver1_temp" ]
 			then
-				DEFAULT_NS1=`echo $nameserver1_temp`
-				if [[ -n $nameserver1_temp ]]
+				DEFAULT_NS1="$(echo "$nameserver1_temp")"
+				if [ -n "$nameserver1_temp" ]
 				then 
-					DEFAULT_NS2=`echo $nameserver2_temp`
+					DEFAULT_NS2="$(echo $nameserver2_temp)"
 				fi
 			fi
 		else
-			if [[ -n $current_etc_resolv_conf ]]
+			if [ -n "$current_etc_resolv_conf" ]
 			then
-				nameserver1_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1 `
-				nameserver2_temp=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1`
-				if [[ -n $nameserver1_temp ]]
+				nameserver1_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -1)"
+				nameserver2_temp="$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'| head -2 | tail -1)"
+				if [ -n "$nameserver1_temp" ]
 				then
-					DEFAULT_NS1=`echo $nameserver1_temp`
-					if [[ -n $nameserver1_temp ]]
+					DEFAULT_NS1="$(echo $nameserver1_temp)"
+					if [ -n "$nameserver1_temp" ]
 					then 
-						DEFAULT_NS2=`echo $nameserver2_temp`
+						DEFAULT_NS2="$(echo $nameserver2_temp)"
 					fi
 				fi
 			fi
@@ -156,15 +166,15 @@ save_current_nameserver_conf_and_disable_resolved()
 	
 	chattr -i /etc/resolv.conf
 	rm /etc/resolv.conf
-	disable_stop_systemd_resolved
-	echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
-	echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
 
-	set +x
+	[ "$OSKERNEL" = "Linux" ] && systemctl disable --now systemd-resolved
+
+	[ -n "$DEFAULT_NS1" ] && echo "nameserver $DEFAULT_NS1" > /etc/resolv.conf
+	[ -n "$DEFAULT_NS2" ] && echo "nameserver $DEFAULT_NS2" >> /etc/resolv.conf
+
 	echo "PLEASE NOTE:
 	The following servers are set as your DNS servers.
-	you can change this configuration by editing /etc/resolv.conf
-	
-	"
-	set -x
+	you can change this configuration by editing /etc/resolv.conf\n"
+
+	cat /etc/resolv.conf
 }

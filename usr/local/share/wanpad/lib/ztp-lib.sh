@@ -21,28 +21,27 @@ ztp_dialogue()
 	echo "
 Please Provide the following information:
 "
-	read -r -p "WANPAD controller URI: " "URI"
+	read -r -p "WANPAD controller address: " "CONTROLLER_DOMAIN"
 	read -r -p "Your access token: " "TOKEN"
-	echo $URI $TOKEN
+	echo $CONTROLLER_DOMAIN $TOKEN
 }
 
 validate_token()
 {
-	local val_status_code=`curl -is -X POST https://${URI}:${CONTROLLER_API_PORT}/wanpad/api/v1/auth/validate_token/ \
-		    -H 'Content-Type: application/json' \
-		    -d '{"token": "'"${TOKEN}"'"}' | grep "HTTP/" | awk '{print $2}'`
-	
+	local data="$(echo '{}' | jq -c --arg token $1 '.token=$token')"
+
+	local val_status_code="$(post_api /wanpad/api/v1/auth/validate_token/ "$data" | jq -s 'add | .http_code')"
+
 	case $val_status_code in
 		200)
 			echo Great! your token is valid.
 			;;
 		4??)
-			echo Sorry your token is not valid. Please check your token again or make a new one.
+			print_error "Sorry your token is not valid. Please check your token again or make a new one."
 			exit 1
 			;;
 		*)
-			echo Something went wrong. Please check your token again and 
-			the problem still remains, reach out to our technical support.
+			print_error "Something went wrong. Please check your token again and the problem still remains, reach out to our technical support."
 			exit 1
 			;;
 	esac
@@ -50,8 +49,14 @@ validate_token()
 
 save_ztp_config()
 {
-	sed -i.bak -e "/^URI=/s/=.*/=https:\/\/$URI:$CONTROLLER_API_PORT\/wanpad\/api\/v1\/devices\/plug_play\//" \
-				-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	if [ "${OSKERNEL}" = "FreeBSD" ]
+	then
+		sed -i '.bak' -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
+					-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	else
+		sed -i.bak -e "/^CONTROLLER_DOMAIN=/s/=.*/=${CONTROLLER_DOMAIN}/" \
+					-e "/^TOKEN=/s/=.*/=$TOKEN/" /usr/local/etc/wanpad/wanpad.conf
+	fi
 }
 
 run_ztp_py()
@@ -59,5 +64,11 @@ run_ztp_py()
 	set -a
 	. /usr/local/etc/wanpad/wanpad.conf
 	set +a
+	get_scheme
+	export CONTROLLER_SCHEME
+	export CONTROLLER_DOMAIN
+	export CONTROLLER_API_PORT
+	export CONTROLLER_API_PATH
+
 	python3 /usr/local/share/wanpad/ztp/pnp-client.py
 }

@@ -18,30 +18,35 @@
 
 OSKERNEL=$(uname -s)
 
-RED='\033[0;31m'
-NC='\033[0m' # No Color
-
-print_error ()
+print_error()
 {
-# usage:
-# ERROR_MSG="some error"
-# print_error
-  echo -e "${RED}
- ERROR:
-  ${ERROR_MSG}${NC}"
+  local RED='\033[0;31m'
+  local NC='\033[0m' # No Color
+  printf "${RED}ERROR:\t$1${NC}\n"
+}
+
+number_validator()
+{
+  case $1 in
+      ''|*[!0-9]*)
+      false
+      ;;
+      *)
+      true
+      ;;
+  esac
 }
 
 force_run_as_root()
 {
   uid=`id -u`
   if [ $uid != 0 ]; then
-    ERROR_MSG="Please run as \"root\" and try again."
-    print_error
+    print_error "Please run as \"root\" and try again."
     exit 1
   fi
 }
 
-getArch()
+get_arch()
 {
   ARCH=$(uname -m)
   case $ARCH in
@@ -65,4 +70,50 @@ getArch()
       exit 1
     ;;
   esac
+}
+
+get_scheme()
+{
+  if [ "$SSL" = "true" ]
+  then
+    export CONTROLLER_SCHEME="https"
+  else
+    export CONTROLLER_SCHEME="http"
+  fi
+}
+
+usage()
+{
+    cat << EOF
+wanpadctl(8) is an open-source utility for automating deployment and management of
+WANPAD edges for SD-WAN controller.
+
+Usage:
+  wanpadctl command [args]
+
+Available Commands:
+  install   prepare and set up operating system to function as edge device.
+  init      join to WANPAD controller.
+  oob       connect to WANPAD controller using oob network.
+  lte       configure lte module. (if any exists.)
+  sot       client-side operations of source of truth. check wanpadctl(8) for more details.
+
+Use "wanpad -v|--version" for version information.
+Use "wanpad command -h|--help" for more information about a command.
+
+EOF
+    exit 1
+}
+
+get_api()
+{
+	local CONTROLLER_URL="$(get_controller_url $1)"
+	curl -s -X GET $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -w "%{json}"
+}
+
+post_api()
+{
+  local data="$2"
+	local CONTROLLER_URL="$(get_controller_url $1)"
+	curl -s -X POST $CONTROLLER_URL -H 'Content-Type: application/json' -H "Authorization: Basic ${TOKEN}" -d "$data" -w "%{json}"
 }

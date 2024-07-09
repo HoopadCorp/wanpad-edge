@@ -5,6 +5,7 @@ DEBUG=				$$(if [ "${OS}" = "FreeBSD" ]; then echo set -xeouv pipefail; else ech
 WANPAD_VERSION=		$$(git rev-parse HEAD)
 WANPAD_CMD=			/usr/local/bin/wanpadctl
 WANPAD_USERNAME=	hoopad
+WANPAD_GROUP=		hoopad
 
 .PHONY: all
 all:
@@ -15,9 +16,9 @@ deps:
 	@echo "Install applications"
 	@if [ -e /etc/debian_version ]; then\
 		DEBIAN_FRONTEND=noninteractive apt install -y net-tools git openvpn python3-pip wireguard snmpd libqmi-utils udhcpc build-essential\
-		 python3-dev strongswan strongswan-starter frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs;\
+		 python3-dev strongswan strongswan-starter strongswan-swanctl ocserv frr bird2 keepalived fprobe sudo golang-1.20-go git-lfs jq prometheus-smokeping-prober;\
 	elif [ "${OS}" = "FreeBSD" ]; then\
-		pkg install -y git openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go;\
+		pkg install -y git-lite openvpn python3 py39-pip strongswan frr9 frr9-pythontools bird2 fprobe sudo node_exporter go jq gcc49;\
 	fi
 	@echo
 	@echo "Install python applications"
@@ -30,6 +31,20 @@ deps:
 		tar xzvf /tmp/node_exporter.tar.gz -C /tmp --wildcards "*/node_exporter";\
 		mv /tmp/node_exporter-*/node_exporter /usr/local/bin/;\
 		rm -rf /tmp/node_exporter*;\
+	fi
+	@echo
+	@echo "Install UDPSpeeder (FEC)"
+	@echo
+	@if [ ! -s /usr/local/bin/speederv2 ]; then\
+		git clone https://github.com/wangyu-/UDPspeeder.git /tmp/UDPspeeder;\
+		if [ -e /etc/debian_version ]; then\
+			make -C /tmp/UDPspeeder;\
+		elif [ "${OS}" = "FreeBSD" ]; then\
+			ln -s /usr/local/bin/g++49 /usr/local/bin/g++;\
+			make -C /tmp/UDPspeeder freebsd;\
+		fi;\
+		cp /tmp/UDPspeeder/speederv2 /usr/local/bin/;\
+		rm -rf /tmp/UDPspeeder;\
 	fi
 	@echo
 	@echo "Install birdwatcher"
@@ -85,12 +100,37 @@ install: ca deps generate
 	@echo "Installing wanpad"
 	@echo
 	@cp -Rv usr /
+	@echo
+	@echo "Set ownership of wanpad configuration directory to ${WANPAD_USERNAME} and ${WANPAD_GROUP}"
+	@echo
+	@chown ${WANPAD_USERNAME}:${WANPAD_GROUP} -R /usr/local/etc/wanpad
 	@chmod +x ${WANPAD_CMD}
 	@echo
 	@echo "Install filebeat"
 	@echo
 	@tar xzvf usr/local/share/wanpad/tar-files/filebeat.tar.gz -C /usr/local/share/wanpad/client-services/
 	@ln -sf /usr/local/share/wanpad/client-services/filebeat/filebeat /usr/local/bin/
+	@echo
+	@if [ "${OS}" = "GNU/Linux" ]; then\
+		echo "Configure apparmor (Linux)";\
+		cp /usr/local/share/wanpad/apparmor.d/usr.sbin.swanctl /etc/apparmor.d/local/usr.sbin.swanctl;\
+		aa-status --enabled && apparmor_parser -r /etc/apparmor.d/usr.sbin.swanctl;\
+	fi
+	@echo "Installing wanpad configuration"
+	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\
+		cp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf;\
+	else\
+		echo "wanpad configuration file is already exists at /usr/local/etc/wanpad/wanpad.conf.";\
+		echo "If you want the new configuration use the following command below:";\
+		echo "\tcp /usr/local/etc/wanpad/wanpad.conf.sample /usr/local/etc/wanpad/wanpad.conf";\
+	fi
+
+.PHONY: installonly
+installonly:
+	@echo "Installing wanpad version"
+	@echo
+	@cp -Rv usr /
+	@chmod +x ${WANPAD_CMD}
 	@echo
 	@echo "Installing wanpad configuration"
 	@if [ ! -s /usr/local/etc/wanpad/wanpad.conf ]; then\

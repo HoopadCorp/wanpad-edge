@@ -17,3 +17,19 @@
 
 . /usr/local/share/wanpad/common.sh
 
+# Handle special-case commands first.
+case "$1" in
+help|-h|--help)
+    sot_usage
+    ;;
+esac
+
+if [ "$1" = "update" ]
+then
+    if [ "$2" = "smokeping" ]
+    then
+        smokeping_compare_and_update
+    fi
+else
+    sot_usage
+fi
