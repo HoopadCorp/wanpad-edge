@@ -42,6 +42,28 @@ start_wanpad_services()
 	fi	
 }
 
+enable_strongswan_service()
+{
+	if [ "$OSKERNEL" = "Linux" ]
+	then 
+		systemctl enable --now strongswan-starter || true
+	else	
+		service strongswan enable || true
+		service strongswan start || true
+	fi	
+}
+
+enable_bird_service()
+{
+	if [ "$OSKERNEL" = "Linux" ]
+	then 
+		systemctl enable --now bird || true
+	else	
+		service bird enable || true
+		service bird start || true
+	fi	
+}
+
 enable_ipv4_forward()
 {
 	echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/10-ip_forward.conf

@@ -23,6 +23,8 @@ force_run_as_root
 configure_birdwatcher
 [ "$OSKERNEL" = "Linux" ] && enable_wanpad_systemd_services
 start_wanpad_services
+enable_strongswan_service
+enable_bird_service
 enable_ipv4_forward
 set_fib_multipath_hash_policy
 set_fib_ip_no_pmtu_disc_1
