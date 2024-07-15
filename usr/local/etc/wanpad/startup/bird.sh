@@ -4,7 +4,7 @@
 
 BIRD_DIR="/usr/local/etc/wanpad/bird/conf.d"
 
-if ! $(grep -q "include ${BIRD_DIR}/\*.conf" /etc/bird/bird.conf)
+if ! $(grep -q "include \"${BIRD_DIR}/\*.conf\";" /etc/bird/bird.conf)
 then
-    echo "include ${BIRD_DIR}/*.conf" >> /etc/bird/bird.conf
+    echo "include \"${BIRD_DIR}/*.conf\";" >> /etc/bird/bird.conf
 fi
