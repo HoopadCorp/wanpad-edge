@@ -123,7 +123,6 @@ def client_request_to_gateway(scheme, gateway_address, token, dsf):
 def create_file_beat(data, address):
     with open(address, 'w+') as filebeat_config:
         yaml.dump(data, filebeat_config, default_flow_style=False)
-        os.chown(address, 0, 0) 
 
 
 if __name__ == "__main__":
