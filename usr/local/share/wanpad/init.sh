@@ -37,6 +37,7 @@ case "$NA" in
 		;;
 esac
 
+
 save_ztp_config
-validate_token $2
+validate_token $TOKEN
 run_ztp_py

@@ -24,13 +24,17 @@ Please Provide the following information:
 	read -r -p "WANPAD controller address: " "CONTROLLER_DOMAIN"
 	read -r -p "Your access token: " "TOKEN"
 	echo $CONTROLLER_DOMAIN $TOKEN
+	export CONTROLLER_DOMAIN
+	export TOKEN 
+
 }
 
 validate_token()
 {
+	get_scheme
 	local data="$(echo '{}' | jq -c --arg token $1 '.token=$token')"
 
-	local val_status_code="$(post_api /wanpad/api/v1/auth/validate_token/ "$data" | jq -s 'add | .http_code')"
+	local val_status_code="$(post_api "${CONTROLLER_SCHEME}://${CONTROLLER_DOMAIN}:${CONTROLLER_API_PORT}" /wanpad/api/v1/auth/validate_token/ "$data" | jq -s 'add | .http_code')"
 
 	case $val_status_code in
 		200)
@@ -59,13 +63,14 @@ save_ztp_config()
 	fi
 }
 
+
 run_ztp_py()
 {
 	set -a
 	. /usr/local/etc/wanpad/wanpad.conf
 	set +a
 	get_scheme
-	export CONTROLLER_SCHEME
+	#export CONTROLLER_SCHEME
 	export CONTROLLER_DOMAIN
 	export CONTROLLER_API_PORT
 	export CONTROLLER_API_PATH
