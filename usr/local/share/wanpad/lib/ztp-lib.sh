@@ -25,7 +25,7 @@ Please Provide the following information:
 	read -r -p "Your access token: " "TOKEN"
 	echo $CONTROLLER_DOMAIN $TOKEN
 	export CONTROLLER_DOMAIN
-	export TOKEN 
+	export TOKEN
 
 }
 

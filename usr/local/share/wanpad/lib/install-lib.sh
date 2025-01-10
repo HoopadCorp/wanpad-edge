@@ -35,33 +35,33 @@ enable_wanpad_systemd_services()
 start_wanpad_services()
 {
 	if [ "$OSKERNEL" = "Linux" ]
-	then 
+	then
 		systemctl start wanpad-*.service --all || true
-	else	
+	else
 		service wanpad-* start || true
-	fi	
+	fi
 }
 
 enable_strongswan_service()
 {
 	if [ "$OSKERNEL" = "Linux" ]
-	then 
+	then
 		systemctl enable --now strongswan-starter || true
-	else	
+	else
 		service strongswan enable || true
 		service strongswan start || true
-	fi	
+	fi
 }
 
 enable_bird_service()
 {
 	if [ "$OSKERNEL" = "Linux" ]
-	then 
+	then
 		systemctl enable --now bird || true
-	else	
+	else
 		service bird enable || true
 		service bird start || true
-	fi	
+	fi
 }
 
 enable_ipv4_forward()
